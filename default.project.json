@@ -4,7 +4,9 @@
     "$className": "DataModel",
 
     "ServerStorage": {
-      "$path": "PluginPlace/src/"
+      "Plugin": {
+        "$path": "PluginPlace/src/"
+      }
     },
 
     "Workspace": {
