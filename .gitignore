@@ -1,6 +1,11 @@
+# Python Stuff
+/*.__pycache__
+
 # Project place file
 /build.rbxlx
 
 # Roblox Studio lock files
 /*.rbxlx.lock
 /*.rbxl.lock
+
+/*.api_dump.json

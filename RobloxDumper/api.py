@@ -1,10 +1,12 @@
 """Locate roblox studio binary and perform an api execution"""
+import os
+import json
+
 class RobloxStudioApi:
-    BinaryPath : None | str = None
+    BinaryPath : None | str = r"C:\Users\%username%\AppData\Local\Roblox\Versions\version-cab881b8584d4028\RobloxStudioBeta.exe"
     def __init__(self) -> None:
-        # TODO: locate the roblox studio binary path
         pass
-    def DumpJSON() -> str:
-        # TODO: use the BinaryPath to execute the binary and save to a temp file 
-        # inside the os temp directory
-        pass
+    
+    def DumpJSON(self) -> dict:
+        os.system(f"{self.BinaryPath} -API api_dump.json")
+        return json.load(open("api_dump.json"))
