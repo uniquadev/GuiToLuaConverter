@@ -1,12 +1,24 @@
 -- Modules
+-- Services
+local Selection = game:GetService("Selection")
+
 -- Plugin UI
 local Toolbar = plugin:CreateToolbar("GuiToLuaConverter");
 local ConvertBtn = Toolbar:CreateButton("Start Convertion", "Convert the selected ScreenGui", "rbxassetid://3526632592");
+
 -- Plugin Core
 local function Convert()
-    print('Hello World')
-    -- TODO: check if ScreenGui selected
-    -- TODO: make a GuiToLuaConverter folder in the workspace
+    local CurrentlySelectedParts = Selection:Get()
+    if (#CurrentlySelectedParts ~= 1 or CurrentlySelectedParts[1].ClassName ~= "ScreenGui") then
+        warn("Please select a ScreenGui")
+        return
+    end
+    local ScreenGui = CurrentlySelectedParts[1]
+
+    local GuiToLuaConverterFolder = Instance.new("Folder", game.Workspace)
+    GuiToLuaConverterFolder.Name = "GuiToLuaConverter"
+
+
     -- TODO: start convertion
     -- TODO: check errors
     -- TODO: instanciate a "ScreenGui.Name .. os.time"  disabled LocalScript in the out folder
