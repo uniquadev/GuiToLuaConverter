@@ -1,6 +1,6 @@
 -- Modules
 -- Services
-local Selection = game:GetService("Selection")
+local Selection = game:GetService("Selection");
 
 -- Plugin UI
 local Toolbar = plugin:CreateToolbar("GuiToLuaConverter");
@@ -8,15 +8,15 @@ local ConvertBtn = Toolbar:CreateButton("Start Convertion", "Convert the selecte
 
 -- Plugin Core
 local function Convert()
-    local CurrentlySelectedParts = Selection:Get()
+    local CurrentlySelectedParts = Selection:Get();
     if (#CurrentlySelectedParts ~= 1 or CurrentlySelectedParts[1].ClassName ~= "ScreenGui") then
-        warn("Please select a ScreenGui")
-        return
-    end
-    local ScreenGui = CurrentlySelectedParts[1]
+        warn("Please select a ScreenGui");
+        return;
+    end;
+    local ScreenGui = CurrentlySelectedParts[1];
 
-    local GuiToLuaConverterFolder = Instance.new("Folder", game.Workspace)
-    GuiToLuaConverterFolder.Name = "GuiToLuaConverter"
+    local GuiToLuaConverterFolder = Instance.new("Folder", game.Workspace);
+    GuiToLuaConverterFolder.Name = "GuiToLuaConverter";
 
 
     -- TODO: start convertion
