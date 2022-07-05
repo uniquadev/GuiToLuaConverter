@@ -1,4 +1,4 @@
-def SanitizeDump(DumpJSON:dict) -> str:
+def SanitizeDump(DumpJSON:dict) -> list:
     """Parse the json and remove all useless data such ReadOnly properties and more.."""
 
     properties = []
