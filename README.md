@@ -1,6 +1,6 @@
 <h2 align="center"> 
   Gui To Lua Convert <br>
-  <i>An optimized Gui to Lua converter</i>
+  <i>An optimized Gui to Lua converter.</i>
   </h2>
 
 
