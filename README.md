@@ -13,7 +13,7 @@
 
 ## Installation 🧰
 
-1. Go to the plugin [page](https://www.roblox.com/library/752585459/) on Roblox.
+1. Go to the plugin [page](https://www.roblox.com/library/1/) on Roblox.
 1. Press `Install`
 
 ## Usage 💻
