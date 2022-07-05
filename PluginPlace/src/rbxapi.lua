@@ -67,6 +67,7 @@ local function LoadDefaultValues(ClassName:string) : nil
         ClassObj.Members[Member] = Dummy[Member];
     end;
 end
+-- Return a table containing Members as index and member's DefaultValue as value
 local function GetProperties(ClassName:string) : {[string]: any} | nil
     -- check if registred
     local ClassObj = ROBLOX_REG[ClassName];

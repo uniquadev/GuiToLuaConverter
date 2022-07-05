@@ -7,7 +7,7 @@ local DEBUG = true;
 local Selection = game:GetService("Selection");
 
 -- Plugin UI
-local Toolbar = plugin:CreateToolbar("GuiToLuaConverter");
+local Toolbar = plugin:CreateToolbar("GuiToLua");
 local ConvertBtn = Toolbar:CreateButton(
     "Start Convertion", "Convert the selected ScreenGui", "rbxassetid://3526632592"
 );
