@@ -1,13 +1,15 @@
 --// REQUIRES \\--
 local Utils = require(script.Parent:WaitForChild("utils"));
+getfenv(Utils.IsLocal)['plugin'] = plugin; -- roblox suck
 local RbxApi = require(script.Parent:WaitForChild("rbxapi")); -- Debug purpose
 local G2L = require(script.Parent:WaitForChild("core"));
+
 --// GLOBALS \\--
-local DEBUG = true;
+local DEBUG = Utils.IsLocal();
 -- Services
 local Selection = game:GetService("Selection");
 
--- Plugin UI
+--// UI \\--
 local Toolbar = plugin:CreateToolbar("GuiToLua");
 local ConvertBtn = Toolbar:CreateButton(
     "Start Convertion", "Convert the selected ScreenGui", "rbxassetid://3526632592"
@@ -30,6 +32,7 @@ local function Convert()
     local Out = Utils.WriteConvertionRes(Res);
     -- select the out folder
     Selection:Set(Out:GetChildren());
+    plugin:OpenScript(Out:FindFirstChildOfClass('LocalScript'));
 end;
 
 --// DEBUG WORKFLOW \\--
@@ -39,7 +42,9 @@ local function PropertiesCheck()
     assert(Members, 'Can\'t retrive TextLabel properties.');
     assert(Dummy, 'Dummy not instanciated.');
     assert(Members['Text'], 'TextLabel.Text not found.');
-    assert(Members['Text'] == Dummy.Text, ('TextLabel.Text not EQ to %s.'):format(Dummy.Text));
+    assert(Members['Text'].Value == Dummy.Text, ('TextLabel.Text, %s not EQ to %s'):format(
+        Members['Text'].Value, Dummy.Text
+    ));
     print('ROBLOX-API working.')
 end
 

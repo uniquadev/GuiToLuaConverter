@@ -20,66 +20,60 @@ local Dump = require(script.Parent:WaitForChild("dump")) -- dump.json generated 
 -- _Hold all deserialized classes of the dump._
 local ROBLOX_REG : {[string]: ClassObject} = {};
 -- _Contain all dummy instances used to check default values._
-local DUMMIES : {[string]: Instance} = {}; 
+local DUMMIES : {[string]: Instance} = {};
+local CACHE : {[string]: PropertiesRes} = {}; -- cache results to avoid loading members & defaults every time
 
 --// STRUCT \\--
+export type ValueObject = {Value: any};
 export type ClassObject = {
     Name: string,
-    Members: {[string]: any}, -- Property1: DefaultValue
+    Members: {[number]: string}, -- Property1: DefaultValue
     Superclass: ClassObject
 }
-export type MembersRes = {[string]: any} | nil
+export type PropertiesRes = {[string]: ValueObject} | nil
 
 --// SERIALIZE \\--
 for ClassName, ClassObj:ClassObject in pairs(Dump) do
     ClassObj.Name = ClassName;
-    -- invert index to value
-    local Members = {};
-    for _, Member in pairs(ClassObj.Members) do
-        Members[Member] = {}; -- since we can't set nil as default;
-    end
-    ClassObj.Members = Members; -- should force gc of the dump members
     -- register class obj
     ROBLOX_REG[ClassName] = ClassObj;
 end;
 
 --// CORE \\--
 
--- Load all default value of the passed Class inside ROBLOX_REG
-local function LoadDefaultValues(ClassName:string) : nil
-    -- check if already loaded
-    if DUMMIES[ClassName] or not ROBLOX_REG[ClassName] then
-        return;
-    end
+-- Load default values of the passed members dictionary
+local function LoadDefaultValues(ClassName:string, Members:PropertiesRes) : nil
     -- make dummy
     local Dummy;
     pcall(function()
-        Dummy = Instance.new(ClassName);
+        Dummy = DUMMIES[ClassName] or Instance.new(ClassName);
     end);
     -- store dummy
-    DUMMIES[ClassName] = Dummy or true;
+    DUMMIES[ClassName] = Dummy or false;
     -- check dummy integrity
 	if not Dummy then
 		return;
 	end
     -- store default values
-    local ClassObj = ROBLOX_REG[ClassName];
-    for Member in pairs(ClassObj.Members) do
+    for Member, Default in pairs(Members) do
         pcall(function() -- errors like 'The current identity (5) cannot access...' can occur
-			ClassObj.Members[Member] = Dummy[Member];
+			Default.Value = Dummy[Member];
 		end);
     end;
 end
 -- Return a table containing Members as index and member's DefaultValue as value
-local function GetProperties(ClassName:string) : MembersRes
+local function GetProperties(ClassName:string) : PropertiesRes
+    -- check cache
+    if CACHE[ClassName] then
+        return CACHE[ClassName];
+    end
     -- check if registred
     local ClassObj = ROBLOX_REG[ClassName];
     if not ClassObj then
         return;
     end
-    local Members = {}
+    local Members : PropertiesRes = {}
     -- Load superclass
-    LoadDefaultValues(ClassObj.Superclass);
     local SuperMembers = GetProperties(ClassObj.Superclass);
     -- check if found
     if SuperMembers then
@@ -88,10 +82,13 @@ local function GetProperties(ClassName:string) : MembersRes
         end;
     end;
     -- Load class
-    LoadDefaultValues(ClassName);
-    for Member, DefaultValue in pairs(ClassObj.Members) do
-        Members[Member] = DefaultValue;
+    for _, Member in pairs(ClassObj.Members) do
+        Members[Member] = {
+            Value = nil
+        };
     end
+    LoadDefaultValues(ClassName, Members);
+    CACHE[ClassName] = Members;
     return Members;
 end
 

@@ -1,8 +1,15 @@
 --// REQUIRE \\--
-local G2L = require(script.Parent.core)
+local G2L;
+if false then -- fake block, just load the G2L.ConvertionRes for typechecking
+    G2L = require(script.Parent.core);
+end
 
 local Utils;
 Utils = {
+    -- Detect if the plugin is running locally
+	IsLocal = function() : boolean
+		return string.find(plugin.Name, ".rbxm") or string.find(plugin.Name, ".lua");
+	end,
     -- Generate an output folder inside the workspace with the passed name
     GetOutFolder = function(Name) : Folder
         local Out = Instance.new('Folder', workspace);

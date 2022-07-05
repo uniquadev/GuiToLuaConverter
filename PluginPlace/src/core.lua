@@ -10,15 +10,16 @@
 -- return
 
 --// REQUIRES \\--
-local RbxApi = require(script.Parent.rbxapi)
+local RbxApi = require(script.Parent.rbxapi);
+local Utils = require(script.Parent.utils);
+local Logo = script.Parent.logo.Value;
 
 --// CONST \\--
 local FORMAT_NEW = 
 [[
-%s["%s"] = Instance.new("%s");
+%s["%s"] = Instance.new("%s", %s);
 %s
-
-]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Properties
+]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties
 
 --// STRUCT \\--
 
@@ -47,7 +48,7 @@ export type Settings = {
 
 local function DefaultSettings() : Settings
     return {
-        RegName = 'Luazifier',
+        RegName = 'G2L',
         Comments = true,
         Logo = true
     };
@@ -76,34 +77,52 @@ end;
 local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
     local Properties = '';
     local Members = RbxApi.GetProperties(Inst.Instance.ClassName);
-    for Member, DefaultValue in pairs(Members) do
-        -- special case as we have to get the id to reference the right parent
+    for Member, Default:RbxApi.ValueObject in pairs(Members) do
+        -- special case skip
         if Member == 'Parent' then
-            if Inst.Parent == nil then -- gui case
-                -- TODO: let user choice wich parent use for the ScreenGui from Settings
-                Properties = Properties .. ('%s["%s"].Parent = game:GetService("StarterGui");\n'):format(
-                    Res.Settings.RegName, Inst.Id
-                );
-            else
-                Properties = Properties .. ('%s["%s"].Parent = %s["%s"];\n'):format(
-                    Res.Settings.RegName, Inst.Id,
-                    Res.Settings.RegName, Inst.Parent.Id
-                );
-            end
+            continue;         
         -- default property case
         else
+            local Type;
             local CanSkip = false;
             -- skip if default value is set
             local Integrity = pcall(function()
-                CanSkip = Inst.Instance[Member] == DefaultValue;
+                Type = typeof(Inst.Instance[Member]);
+                CanSkip = Inst.Instance[Member] == Default.Value;
             end);
             if CanSkip or not Integrity then
                 continue;
             end
+            -- encode value
+            local Raw = Inst.Instance[Member];
+            local Value = '';
+            if Type == 'string' then
+                Value = '"' .. Raw .. '"';
+            elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
+                Value = tostring(Raw);
+            elseif Type == 'Vector2' then
+                Value = 'Vector2.new(' .. Raw.X .. ',' .. Raw.Y .. ')';
+            elseif Type == 'Vector3' then
+                Value = 'Vector3.new(' .. Raw.X .. ',' .. Raw.Y .. ',' .. Raw.Z .. ')';
+            elseif Type == 'UDim2' then
+                Value = 'UDim2.new(' .. Raw.X.Scale .. ',' .. Raw.X.Offset .. ',' 
+                .. Raw.Y.Scale .. ',' .. Raw.Y.Offset .. ')';
+            elseif Type == 'UDim' then
+                Value = 'UDim.new(' .. Raw.X .. ',' .. Raw.Y .. ')';
+            elseif Type == 'Color3' then
+                Value = 'Color3.new(' .. Raw.R .. ',' .. Raw.G .. ',' .. Raw.B .. ')';
+            end
             -- set property
-            Properties = Properties .. ('%s["%s"]["%s"] = %s;\n'):format(
-                Res.Settings.RegName, Inst.Id, Member,
-                "'TODO'"
+            if Value == '' then -- if value is not resolved
+                if Utils.IsLocal() then
+                    Properties = Properties .. '-- '; -- comment property to debug it
+                else
+                    continue; -- skip property
+                end;
+            end
+            Properties =  Properties .. ('%s["%s"]["%s"] = %s;\n'):format(
+                Res.Settings.RegName, Inst.Id,
+                Member, Value
             );
         end;
     end;
@@ -117,11 +136,22 @@ local function WriteInstances(Res:ConvertionRes)
         if Res.Settings.Comments then
             Comment = '-- ' .. Inst.Instance:GetFullName() .. '\n';
         end
+        -- solve parent
+        local Parent = '';
+        if Inst.Parent == nil then -- gui case
+            -- TODO: let user choice wich parent use for the ScreenGui from Settings
+            Parent = 'game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")';
+        else
+            Parent = ('%s["%s"]'):format(
+                Res.Settings.RegName, Inst.Parent.Id
+            ); -- we have to get the id to reference the right parent
+        end
         -- write instance
         Res.Source =  Res.Source .. Comment.. FORMAT_NEW:format(
             Res.Settings.RegName,
             Inst.Id,
             Inst.Instance.ClassName,
+            Parent,
             GetProperties(Res, Inst)
         );
     end
@@ -140,6 +170,17 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     Res.Source = ('local %s = {};\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
+    -- apply comments
+    if Settings.Comments then
+        local Info = ('-- Instances: %d | Scripts: %d\n'):format(
+            #Res._INST, #Res._LUA
+        );
+        Res.Source = Info .. Res.Source;
+    end
+    -- apply logo
+    if Settings.Logo then
+        Res.Source = Logo .. '\n\n' .. Res.Source
+    end
     return Res;
 end;
 
