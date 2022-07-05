@@ -28,6 +28,7 @@ export type ClassObject = {
     Members: {[string]: any}, -- Property1: DefaultValue
     Superclass: ClassObject
 }
+export type MembersRes = {[string]: any} | nil
 
 --// SERIALIZE \\--
 for ClassName, ClassObj:ClassObject in pairs(Dump) do
@@ -64,11 +65,13 @@ local function LoadDefaultValues(ClassName:string) : nil
     -- store default values
     local ClassObj = ROBLOX_REG[ClassName];
     for Member in pairs(ClassObj.Members) do
-        ClassObj.Members[Member] = Dummy[Member];
+        pcall(function() -- errors like 'The current identity (5) cannot access...' can occur
+			ClassObj.Members[Member] = Dummy[Member];
+		end);
     end;
 end
 -- Return a table containing Members as index and member's DefaultValue as value
-local function GetProperties(ClassName:string) : {[string]: any} | nil
+local function GetProperties(ClassName:string) : MembersRes
     -- check if registred
     local ClassObj = ROBLOX_REG[ClassName];
     if not ClassObj then

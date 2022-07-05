@@ -1,6 +1,7 @@
 --// REQUIRES \\--
 local Utils = require(script.Parent:WaitForChild("utils"));
 local RbxApi = require(script.Parent:WaitForChild("rbxapi")); -- Debug purpose
+local G2L = require(script.Parent:WaitForChild("core"));
 --// GLOBALS \\--
 local DEBUG = true;
 -- Services
@@ -24,18 +25,11 @@ local function Convert()
         warn("Please select a ScreenGui");
         return;
     end;
-    -- out folder
-    local OutFolder = Utils.GetOutFolder(Selected.Name);
-
-
-
-    -- TODO: start convertion
-    -- TODO: check errors
-    -- TODO: instanciate a "ScreenGui.Name .. os.time"  disabled LocalScript in the out folder
-    -- TODO: save script (since roblox doesn't let plugins write how many chars they want in a script
-    -- it will require us to split the out code in more scripts and let the user copy paste them in one..
-    -- ty roblox
-    -- TODO: select the instanciated script
+    -- convert
+    local Res = G2L.Convert(Selected);
+    local Out = Utils.WriteConvertionRes(Res);
+    -- select the out folder
+    Selection:Set(Out:GetChildren());
 end;
 
 --// DEBUG WORKFLOW \\--
