@@ -1,6 +1,3 @@
-# Python Stuff
-/*.__pycache__
-
 # Project place file
 /build.rbxlx
 
@@ -8,4 +5,8 @@
 /*.rbxlx.lock
 /*.rbxl.lock
 
-/*.api_dump.json
+# Python Stuff
+__pycache__/
+
+# Dump data
+api_dump.json
