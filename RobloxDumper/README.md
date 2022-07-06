@@ -10,8 +10,8 @@ Since we are only intressted in the properties the user can edit; we filter out 
 
 ## How to use it 👷‍
 1. Clone this repository by doing `git clone https://github.com/uniquadev/GuiToLuaConverter/`
-1. Open the `RobloxDumper` folder using command promt
-1. Run `python main.py`
+1. Open the `GuiToLuaConverter` folder using command promt
+1. Run `python /RobloxDumper/main.py`
 
 The file should be saved in `PluginPlace/src/assets/dump.json`
 
