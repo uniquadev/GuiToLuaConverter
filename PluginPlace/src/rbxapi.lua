@@ -93,7 +93,7 @@ local function GetPropertiesWrapper(ClassName:string) : PropertiesRes
     if CACHE[ClassName] then
         return CACHE[ClassName];
     end
-    -- get properties and load default values by instanciating a dummy instance
+    -- get properties and load default values by instantiating a dummy instance
     local Properties = GetProperties(ClassName);
     LoadDefaultValues(ClassName, Properties);
     -- cache store
