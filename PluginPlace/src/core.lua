@@ -121,7 +121,7 @@ local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
                 Value = 'UDim2.new(' .. Raw.X.Scale .. ',' .. Raw.X.Offset .. ',' 
                 .. Raw.Y.Scale .. ',' .. Raw.Y.Offset .. ')';
             elseif Type == 'UDim' then
-                Value = 'UDim.new(' .. Raw.X .. ',' .. Raw.Y .. ')';
+                Value = 'UDim.new(' .. Raw.Scale .. ',' .. Raw.Offset .. ')';
             elseif Type == 'Color3' then
                 Value = 'Color3.new(' .. Raw.R .. ',' .. Raw.G .. ',' .. Raw.B .. ')';
             end
