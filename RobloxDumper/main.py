@@ -7,7 +7,7 @@ def main():
     JSON = SanitizeDump(DumpJSON)
     
     # Writing JSON to file
-    with open("PluginPlace/src/dump.json", "w") as f:
+    with open("PluginPlace/src/assets/dump.json", "w") as f:
         f.write(json.dumps(JSON, indent=4))
     
 
