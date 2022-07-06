@@ -12,14 +12,17 @@ def SanitizeDump(DumpJSON:dict) -> dict[str, list[str]]:
             if 'Tags' in ClassObj:
                 if "Deprecated" in ClassObj['Tags'] or "ReadOnly" in ClassObj['Tags']:
                     continue
+            if 'Tags' in Member:
+                if "Deprecated" in Member['Tags'] or "ReadOnly" in Member['Tags']:
+                    continue
                 
             if Member["MemberType"] != "Property":
                 continue
             
             # Using .Capitalize() to makes only the first letter of the name capital
             # 'canvasSize' => 'Canvassize' but we need 'CanvasSize'       
-            CapitalizedName = Member["Name"][0].upper() + Member["Name"][1:]
-            Members.append(CapitalizedName)
+            # CapitalizedName = Member["Name"][0].upper() + Member["Name"][1:]
+            Members.append(Member['Name'])
         
         JSON[ClassObj['Name']] = {
             'Superclass': ClassObj['Superclass'],
