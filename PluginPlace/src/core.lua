@@ -200,7 +200,7 @@ local function WriteScripts(Res:ConvertionRes)
     -- write require proxy before loading all modules
     if #Res._MOD > 0 then
         if Res.Settings.Comments then
-            Res.Source = Res.Source .. ('-- Modules: %d\n'):format(#Res._MOD);
+            Res.Source = Res.Source .. ('-- Require G2L wrapper\n'):format(#Res._MOD);
         end;
         Res.Source = Res.Source .. RequireProxy.Source .. '\n\n';
     end;
@@ -250,8 +250,8 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     WriteScripts(Res);
     -- apply comments
     if Settings.Comments then
-        local Info = ('-- Instances: %d | Scripts: %d\n'):format(
-            #Res._INST, #Res._LUA
+        local Info = ('-- Instances: %d | Scripts: %d | Modules: %d\n'):format(
+            #Res._INST, #Res._LUA, #Res._MOD
         );
         Res.Source = Info .. Res.Source;
     end
