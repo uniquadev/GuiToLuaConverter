@@ -1,16 +1,21 @@
+--// SERVICES \\--
+local Selection = game:GetService('Selection');
+local CoreGui = game:GetService('CoreGui');
+
 --// REQUIRES \\--
 local Utils = require(script.Parent:WaitForChild("utils"));
 getfenv(Utils.IsLocal)['plugin'] = plugin; -- roblox suck
 local RbxApi = require(script.Parent:WaitForChild("rbxapi")); -- Debug purpose
 local G2L = require(script.Parent:WaitForChild("core"));
+local Alerts = require(script.Parent:WaitForChild('alerts'));
 
 --// GLOBALS \\--
 local DEBUG = Utils.IsLocal();
--- Services
-local Selection = game:GetService("Selection");
+local TITLE = 'GuiToLua'
 
 --// UI \\--
-local Toolbar = plugin:CreateToolbar("GuiToLua");
+local Screen = Instance.new('ScreenGui', CoreGui);
+local Toolbar = plugin:CreateToolbar(TITLE);
 local ConvertBtn = Toolbar:CreateButton(
     "Start Convertion", "Convert the selected ScreenGui", "rbxassetid://3526632592"
 );
@@ -24,15 +29,18 @@ local function Convert()
     local Selected : ScreenGui = SelectedParts[1];
     -- check if selected instance is a screen gui
     if (not Selected or Selected.ClassName ~= "ScreenGui") then
-        warn("Please select a ScreenGui");
+        Alerts.Warn(Screen, TITLE, "Please select a ScreenGui");
         return;
     end;
+    ConvertBtn.Enabled = false;
     -- convert
     local Res = G2L.Convert(Selected);
     local Out = Utils.WriteConvertionRes(Res);
     -- select the out folder
     Selection:Set(Out:GetChildren());
     plugin:OpenScript(Out:FindFirstChildOfClass('LocalScript'));
+    Alerts.Success(Screen, TITLE, ("%s successfully converted"):format(Res.Gui.Name));
+    ConvertBtn.Enabled = true;
 end;
 
 --// DEBUG WORKFLOW \\--
@@ -45,7 +53,7 @@ local function PropertiesCheck()
     assert(Members['Text'].Value == Dummy.Text, ('TextLabel.Text, %s not EQ to %s'):format(
         Members['Text'].Value, Dummy.Text
     ));
-    print('ROBLOX-API working.')
+    Alerts.Info(Screen, TITLE, 'ROBLOX-API working');
 end
 
 -- Connections
