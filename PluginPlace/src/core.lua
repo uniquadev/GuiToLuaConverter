@@ -68,6 +68,19 @@ export type Settings = {
     Logo: boolean
 }
 
+--// UTIL \\--
+local function EncapsulateString(Str:string)
+    local Level = '';
+    while true do
+        if Str:find(']' .. Level .. ']') then
+            Level = Level .. '=';
+        else
+            break;
+        end
+    end
+    return '['..Level..'[' .. Str .. ']'..Level..']';
+end;
+
 --// CORE \\--
 
 local function DefaultSettings() : Settings
@@ -123,7 +136,7 @@ local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
             local Raw = Inst.Instance[Member];
             local Value = '';
             if Type == 'string' then
-                Value = '"' .. Raw .. '"';
+                Value = EncapsulateString(Raw);
             elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
                 Value = tostring(Raw);
             elseif Type == 'Vector2' then
