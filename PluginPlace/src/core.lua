@@ -12,7 +12,8 @@
 --// REQUIRES \\--
 local RbxApi = require(script.Parent.rbxapi);
 local Utils = require(script.Parent.utils);
-local Logo = script.Parent.logo.Value;
+local RequireProxy = script.Parent.assets.require;
+local Logo = script.Parent.assets.logo.Value;
 
 --// CONST \\--
 local F_NEWINST = 
@@ -28,6 +29,15 @@ end;
 getfenv(%s)["script"] = %s["%s"];
 task.spawn(%s);
 ]] -- %s = ClosureName, %s = ClosureName, %s = RegName, %s = Id, %s = ClosureName
+local F_NEWMOD =
+[=[
+G2L_MODULES[%s["%s"]] = {
+    Closure = function()
+        %s
+    end;
+};
+getfenv(G2L_MODULES[%s["%s"]].Closure)["script"] = %s["%s"];
+]=] -- %s = RegName, %s = Id, %s = Module.Source, %s = RegName, %s = Id, %s = RegName, %s = Id
 
 local BLACKLIST = {
     Source = true,
@@ -48,7 +58,8 @@ export type ConvertionRes = {
     Errors: {[number]: string},
     Source: string,
     _INST: {[number]: RegInstance},
-    _LUA: {RegInstance} -- hold Gui's local scripts
+    _LUA: {RegInstance}, -- hold local scripts
+    _MOD: {RegInstance}  -- hold module scripts
 }
 
 export type Settings = {
@@ -80,6 +91,8 @@ local function LoadDescendants(Res:ConvertionRes, Inst:Instance, Parent:RegInsta
     -- check if local script
     if Inst:IsA('LocalScript') then
         Res._LUA[#Res._LUA+1] = RegInst;
+    elseif Inst:IsA('ModuleScript') then
+        Res._MOD[#Res._MOD+1] = RegInst;
     end;
     -- loop children
     for Idx, Child in next, Inst:GetChildren() do
@@ -170,7 +183,23 @@ local function WriteInstances(Res:ConvertionRes)
     end
 end;
 
-local function WriteScripts(Res:ConvertionRes) -- TODO
+local function WriteScripts(Res:ConvertionRes)
+    -- write require proxy before loading all modules
+    if #Res._MOD > 0 then
+        if Res.Settings.Comments then
+            Res.Source = Res.Source .. ('-- Modules: %d\n'):format(#Res._MOD);
+        end;
+        Res.Source = Res.Source .. RequireProxy.Source .. '\n\n';
+    end;
+    -- register all modules state in the G2L_MODULES
+    for _, Module in next, Res._MOD do
+        Res.Source = Res.Source .. F_NEWMOD:format(
+            Res.Settings.RegName, Module.Id,
+            Module.Instance.Source,
+            Res.Settings.RegName, Module.Id,
+            Res.Settings.RegName, Module.Id
+        );
+    end
     for _, Script in next, Res._LUA do
         -- skip case
         if Script.Instance.Disabled then
@@ -199,7 +228,8 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         Errors = {},
         Source = '',
         _INST = {},
-        _LUA = {}
+        _LUA = {},
+		_MOD = {}
     };
     Res.Source = ('local %s = {};\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
