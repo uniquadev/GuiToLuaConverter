@@ -15,11 +15,24 @@ local Utils = require(script.Parent.utils);
 local Logo = script.Parent.logo.Value;
 
 --// CONST \\--
-local FORMAT_NEW = 
+local F_NEWINST = 
 [[
 %s["%s"] = Instance.new("%s", %s);
 %s
 ]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties
+local F_NEWLUA =
+[[
+local function %s()
+    %s
+end;
+getfenv(%s)["script"] = %s["%s"];
+task.spawn(%s);
+]] -- %s = ClosureName, %s = ClosureName, %s = RegName, %s = Id, %s = ClosureName
+
+local BLACKLIST = {
+    Source = true,
+    Parent = true
+}
 
 --// STRUCT \\--
 
@@ -35,7 +48,7 @@ export type ConvertionRes = {
     Errors: {[number]: string},
     Source: string,
     _INST: {[number]: RegInstance},
-    _LUA: {LocalScript | ModuleScript} -- hold Gui's local scripts
+    _LUA: {RegInstance} -- hold Gui's local scripts
 }
 
 export type Settings = {
@@ -65,9 +78,9 @@ local function LoadDescendants(Res:ConvertionRes, Inst:Instance, Parent:RegInsta
     };
     Res._INST[Size] = RegInst;
     -- check if local script
-    if Inst:IsA('LocalScript') or Inst:IsA('ModuleScript') then
+    if Inst:IsA('LocalScript') then
         Res._LUA[#Res._LUA+1] = RegInst;
-    end
+    end;
     -- loop children
     for Idx, Child in next, Inst:GetChildren() do
         LoadDescendants(Res, Child, RegInst) -- recursive time 8)
@@ -79,7 +92,7 @@ local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
     local Members = RbxApi.GetProperties(Inst.Instance.ClassName);
     for Member, Default:RbxApi.ValueObject in pairs(Members) do
         -- special case skip
-        if Member == 'Parent' then
+        if BLACKLIST[Member] then
             continue;         
         -- default property case
         else
@@ -147,7 +160,7 @@ local function WriteInstances(Res:ConvertionRes)
             ); -- we have to get the id to reference the right parent
         end
         -- write instance
-        Res.Source =  Res.Source .. Comment.. FORMAT_NEW:format(
+        Res.Source =  Res.Source .. Comment.. F_NEWINST:format(
             Res.Settings.RegName,
             Inst.Id,
             Inst.Instance.ClassName,
@@ -156,6 +169,27 @@ local function WriteInstances(Res:ConvertionRes)
         );
     end
 end;
+
+local function WriteScripts(Res:ConvertionRes) -- TODO
+    for _, Script in next, Res._LUA do
+        -- skip case
+        if Script.Instance.Disabled then
+            continue;
+        end
+        local ClosureName = 'C_' .. Script.Instance.Name .. '_' .. Script.Id;
+        -- set comment
+        local Comment = '';
+        if Res.Settings.Comments then
+            Comment = '-- ' .. Script.Instance:GetFullName() .. '\n';
+        end
+        -- write
+        Res.Source = Res.Source .. Comment .. F_NEWLUA:format(
+            ClosureName, Script.Instance.Source:gsub('\n', '\n\t'), -- fix tabulation
+            ClosureName, Res.Settings.RegName, Script.Id,
+            ClosureName
+        );
+    end
+end
 
 local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     Settings = Settings or DefaultSettings();
@@ -170,6 +204,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     Res.Source = ('local %s = {};\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
+    WriteScripts(Res);
     -- apply comments
     if Settings.Comments then
         local Info = ('-- Instances: %d | Scripts: %d\n'):format(

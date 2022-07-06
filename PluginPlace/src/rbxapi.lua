@@ -27,10 +27,10 @@ local CACHE : {[string]: PropertiesRes} = {}; -- cache results to avoid loading 
 export type ValueObject = {Value: any};
 export type ClassObject = {
     Name: string,
-    Members: {[number]: string}, -- Property1: DefaultValue
+    Members: {[number]: string},
     Superclass: ClassObject
 }
-export type PropertiesRes = {[string]: ValueObject} | nil
+export type PropertiesRes = {[string]: ValueObject} | nil -- Property1: DefaultValue
 
 --// SERIALIZE \\--
 for ClassName, ClassObj:ClassObject in pairs(Dump) do
@@ -60,36 +60,45 @@ local function LoadDefaultValues(ClassName:string, Members:PropertiesRes) : nil
 			Default.Value = Dummy[Member];
 		end);
     end;
-end
+end;
+
+
 -- Return a table containing Members as index and member's DefaultValue as value
 local function GetProperties(ClassName:string) : PropertiesRes
-    -- check cache
-    if CACHE[ClassName] then
-        return CACHE[ClassName];
-    end
     -- check if registred
     local ClassObj = ROBLOX_REG[ClassName];
     if not ClassObj then
         return;
     end
-    local Members : PropertiesRes = {}
+    local Properties : PropertiesRes = {}
     -- Load superclass
-    local SuperMembers = GetProperties(ClassObj.Superclass);
+    local SuperProp = GetProperties(ClassObj.Superclass);
     -- check if found
-    if SuperMembers then
-        for Member, DefaultValue in pairs(SuperMembers) do
-            Members[Member] = DefaultValue;
+    if SuperProp then
+        for Member, DefaultValue in pairs(SuperProp) do
+            Properties[Member] = DefaultValue;
         end;
     end;
     -- Load class
     for _, Member in pairs(ClassObj.Members) do
-        Members[Member] = {
+        Properties[Member] = {
             Value = nil
         };
+    end;
+    return Properties;
+end
+
+local function GetPropertiesWrapper(ClassName:string) : PropertiesRes
+    -- check cache
+    if CACHE[ClassName] then
+        return CACHE[ClassName];
     end
-    LoadDefaultValues(ClassName, Members);
-    CACHE[ClassName] = Members;
-    return Members;
+    -- get properties and load default values by instanciating a dummy instance
+    local Properties = GetProperties(ClassName);
+    LoadDefaultValues(ClassName, Properties);
+    -- cache store
+    CACHE[ClassName] = Properties;
+    return Properties;
 end
 
 local function GetDummy(ClassName:string) : Instance
@@ -97,6 +106,6 @@ local function GetDummy(ClassName:string) : Instance
 end
 
 return {
-    GetProperties = GetProperties;
+    GetProperties = GetPropertiesWrapper;
     GetDummy = GetDummy;
 }
