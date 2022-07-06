@@ -13,7 +13,7 @@ def SanitizeDump(DumpJSON:dict) -> dict[str, list[str]]:
                 if "Deprecated" in ClassObj['Tags'] or "ReadOnly" in ClassObj['Tags']:
                     continue
             if 'Tags' in Member:
-                if "Deprecated" in Member['Tags'] or "ReadOnly" in Member['Tags']:
+                if "Deprecated" in Member['Tags'] or "ReadOnly" in Member['Tags']or "Hidden" in Member['Tags']:
                     continue
                 
             if Member["MemberType"] != "Property":
