@@ -10,7 +10,14 @@
   <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%23f65b5b&labelColor=%23101415&style=for-the-badge">
 </h2>
 
-Made with love, [@uniquadev](https://github.com/uniquadev) and [@iK4oS](https://github.com/ik4oS) made a Gui to Lua converter that is **highly** optimized to convert  your uis in insane speeds without taking a hit to your PC. With **full module support** This is one of the best converters out there.
+Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) and [@iK4oS](https://github.com/ik4oS) to provide **highly** optimized gui to lua convertions long with:
+#### Features
+* Full roblox-api auto update
+* Unlimited gui size
+* Smart properties definition
+* No scripts enviroments polution
+* Simple click and convert ui
+* Open source
 
 ## Installation 🧰
 
