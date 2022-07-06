@@ -1,13 +1,18 @@
+# An optimized Gui to Lua converter.
+
 <h2 align="center"> 
-  Gui To Lua Convert <br>
-  <i>An optimized Gui to Lua converter.</i>
-  </h2>
-
-
-<div align ="center">
+  <a href="https://www.roblox.com/library/1/">
+    <img src="logo_outlined.png" width="700" alt="G2L logo">
+  </a>
+  <br>
   <img src="https://img.shields.io/github/stars/uniquadev/GuiToLuaConverter?color=%238dc776&labelColor=%23101415&style=for-the-badge">
   <img src="https://img.shields.io/github/forks/uniquadev/GuiToLuaConverter?color=%2384a0c6&labelColor=%23101415&style=for-the-badge">
   <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%23f65b5b&labelColor=%23101415&style=for-the-badge">
+</h2>
+
+
+<div align ="center">
+  
 </div>
 
 
