@@ -11,11 +11,6 @@
 </h2>
 
 
-<div align ="center">
-  
-</div>
-
-
 ## Installation 🧰
 
 1. Go to the plugin [page](https://www.roblox.com/library/1/) on Roblox.
