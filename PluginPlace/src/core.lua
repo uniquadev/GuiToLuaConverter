@@ -139,17 +139,35 @@ local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
                 Value = EncapsulateString(Raw);
             elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
                 Value = tostring(Raw);
+            -- %.3f format might be better
             elseif Type == 'Vector2' then
-                Value = 'Vector2.new(' .. Raw.X .. ',' .. Raw.Y .. ')';
+                Value = ('Vector2.new(%s, %s)'):format(
+                    Raw.X, Raw.Y
+                );
             elseif Type == 'Vector3' then
-                Value = 'Vector3.new(' .. Raw.X .. ',' .. Raw.Y .. ',' .. Raw.Z .. ')';
+                Value = ('Vector3.new(%s, %s, %s)'):format(
+                    Raw.X, Raw.Y, Raw.Z
+                );
             elseif Type == 'UDim2' then
-                Value = 'UDim2.new(' .. Raw.X.Scale .. ',' .. Raw.X.Offset .. ',' 
-                .. Raw.Y.Scale .. ',' .. Raw.Y.Offset .. ')';
+                Value = ('UDim2.new(%s, %s, %s, %s)'):format(
+                    Raw.X.Scale, Raw.X.Offset,
+                    Raw.Y.Scale, Raw.Y.Offset
+                );
             elseif Type == 'UDim' then
-                Value = 'UDim.new(' .. Raw.Scale .. ',' .. Raw.Offset .. ')';
+                Value = ('UDim.new(%s, %s)'):format(
+                    Raw.Scale, Raw.Offset
+                );
+            elseif Type == 'Rect' then
+                Value = ('Rect.new(%s, %s, %s, %s)'):format(
+                    Raw.Min.X, Raw.Min.Y,
+                    Raw.Max.X, Raw.Max.Y
+                );
             elseif Type == 'Color3' then
-                Value = 'Color3.new(' .. Raw.R .. ',' .. Raw.G .. ',' .. Raw.B .. ')';
+                -- convert rgb float value to decimal
+                local R, G, B = math.ceil(Raw.R * 255), math.ceil(Raw.G * 255), math.ceil(Raw.B * 255);
+                Value = ('Color3.fromRGB(%s, %s, %s)'):format(
+                    R, G, B
+                );
             end
             -- set property
             if Value == '' then -- if value is not resolved
