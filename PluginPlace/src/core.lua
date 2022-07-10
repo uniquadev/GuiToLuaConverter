@@ -151,6 +151,16 @@ local function TranspileValue(RawValue:any)
         Value = ('Color3.fromRGB(%s, %s, %s)'):format(
             R, G, B
         );
+    elseif Type == "ColorSequence" then
+        local Keypoints = '';
+        for Idx, KeyPoint:ColorSequenceKeypoint in next, RawValue.Keypoints do
+            Keypoints = Keypoints .. ('ColorSequenceKeypoint.new(%.3f, %s),'):format(
+                KeyPoint.Time, TranspileValue(KeyPoint.Value)
+            );
+        end;
+        -- remove last comma
+        Keypoints = Keypoints:sub(1, -2);
+        Value = ('ColorSequence.new{%s}'):format(Keypoints);
     end
     return Value;
 end
