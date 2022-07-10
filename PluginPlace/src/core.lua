@@ -3,9 +3,10 @@
 -- => LoadDescendants(Res)
 --  * Loop all descendants and store them in a reg
 -- => WriteInstances(Res) 
---  * Write all instances as long with their properties
+--  * Write all instances as long with their properties and attributes
 -- => WriteScripts(Res)
 --  * Write all scripts routines with their env
+-- => Append a default return of the screengui
 -- => WriteLogo(Res)
 -- return
 
@@ -276,7 +277,7 @@ local function WriteScripts(Res:ConvertionRes)
             Comment = '-- ' .. Script.Instance:GetFullName() .. '\n';
         end
         -- fix tabulation and apply script variable in the env
-        local Source = ('local script = %s["%s"];\n'):format(
+        local Source = ('local script = %s["%s"];\n\t'):format(
             Res.Settings.RegName, Script.Id
         ) .. Script.Instance.Source:gsub('\n', '\n\t');
         -- write
@@ -302,6 +303,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
     WriteScripts(Res);
+    Res.Source = Res.Source .. ('\nreturn %s["%s"];'):format(Settings.RegName, Res._INST[1].Id);
     -- apply comments
     if Settings.Comments then
         local Info = ('-- Instances: %d | Scripts: %d | Modules: %d\n'):format(
