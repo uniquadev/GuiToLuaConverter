@@ -1,7 +1,7 @@
 # An optimized Gui to Lua converter.
 
 <h2 align="center"> 
-  <a href="https://www.roblox.com/library/1/">
+  <a href="https://www.roblox.com/library/10139235293/">
     <img src="logo_outlined.png" width="700" alt="G2L logo">
   </a>
   <br>
@@ -16,13 +16,13 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 * Attributes support
 * Unlimited gui size
 * Smart properties definition
-* No scripts enviroments polution
+* No scripts enviroments pollution
 * Simple click and convert ui
 * Open source
 
 ## Installation 🧰
 
-1. Go to the plugin [page](https://www.roblox.com/library/1/) on Roblox.
+1. Go to the plugin [page](https://www.roblox.com/library/10139235293/) on Roblox.
 1. Press `Install`
 
 ## Usage 💻
