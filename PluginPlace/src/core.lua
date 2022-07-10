@@ -20,15 +20,15 @@ local F_NEWINST =
 [[
 %s["%s"] = Instance.new("%s", %s);
 %s
-]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties
+%s
+]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties, %s = Attributes
 local F_NEWLUA =
 [[
 local function %s()
     %s
 end;
-getfenv(%s)["script"] = %s["%s"];
 task.spawn(%s);
-]] -- %s = ClosureName, %s = ClosureName, %s = RegName, %s = Id, %s = ClosureName
+]] -- %s = ClosureName, %s = ModifiedSource, %s = ClosureName
 local F_NEWMOD =
 [=[
 G2L_MODULES[%s["%s"]] = {
@@ -113,7 +113,48 @@ local function LoadDescendants(Res:ConvertionRes, Inst:Instance, Parent:RegInsta
     end;
 end;
 
-local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
+-- transpile property to lua
+local function TranspileValue(RawValue:any)
+    local Value = '';
+    local Type = typeof(RawValue);
+    if Type == 'string' then
+        Value = EncapsulateString(RawValue);
+    elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
+        Value = tostring(RawValue);
+    -- %.3f format might be better
+    elseif Type == 'Vector2' then
+        Value = ('Vector2.new(%s, %s)'):format(
+            RawValue.X, RawValue.Y
+        );
+    elseif Type == 'Vector3' then
+        Value = ('Vector3.new(%s, %s, %s)'):format(
+            RawValue.X, RawValue.Y, RawValue.Z
+        );
+    elseif Type == 'UDim2' then
+        Value = ('UDim2.new(%s, %s, %s, %s)'):format(
+            RawValue.X.Scale, RawValue.X.Offset,
+            RawValue.Y.Scale, RawValue.Y.Offset
+        );
+    elseif Type == 'UDim' then
+        Value = ('UDim.new(%s, %s)'):format(
+            RawValue.Scale, RawValue.Offset
+        );
+    elseif Type == 'Rect' then
+        Value = ('Rect.new(%s, %s, %s, %s)'):format(
+            RawValue.Min.X, RawValue.Min.Y,
+            RawValue.Max.X, RawValue.Max.Y
+        );
+    elseif Type == 'Color3' then
+        -- convert rgb float value to decimal
+        local R, G, B = math.ceil(RawValue.R * 255), math.ceil(RawValue.G * 255), math.ceil(RawValue.B * 255);
+        Value = ('Color3.fromRGB(%s, %s, %s)'):format(
+            R, G, B
+        );
+    end
+    return Value;
+end
+
+local function TranspileProperties(Res:ConvertionRes, Inst:RegInstance) : string
     local Properties = '';
     local Members = RbxApi.GetProperties(Inst.Instance.ClassName);
     for Member, Default:RbxApi.ValueObject in pairs(Members) do
@@ -122,69 +163,61 @@ local function GetProperties(Res:ConvertionRes, Inst:RegInstance) : string
             continue;         
         -- default property case
         else
-            local Type;
             local CanSkip = false;
             -- skip if default value is set
             local Integrity = pcall(function()
-                Type = typeof(Inst.Instance[Member]);
                 CanSkip = Inst.Instance[Member] == Default.Value;
             end);
             if CanSkip or not Integrity then
                 continue;
             end
-            -- encode value
-            local Raw = Inst.Instance[Member];
-            local Value = '';
-            if Type == 'string' then
-                Value = EncapsulateString(Raw);
-            elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
-                Value = tostring(Raw);
-            -- %.3f format might be better
-            elseif Type == 'Vector2' then
-                Value = ('Vector2.new(%s, %s)'):format(
-                    Raw.X, Raw.Y
-                );
-            elseif Type == 'Vector3' then
-                Value = ('Vector3.new(%s, %s, %s)'):format(
-                    Raw.X, Raw.Y, Raw.Z
-                );
-            elseif Type == 'UDim2' then
-                Value = ('UDim2.new(%s, %s, %s, %s)'):format(
-                    Raw.X.Scale, Raw.X.Offset,
-                    Raw.Y.Scale, Raw.Y.Offset
-                );
-            elseif Type == 'UDim' then
-                Value = ('UDim.new(%s, %s)'):format(
-                    Raw.Scale, Raw.Offset
-                );
-            elseif Type == 'Rect' then
-                Value = ('Rect.new(%s, %s, %s, %s)'):format(
-                    Raw.Min.X, Raw.Min.Y,
-                    Raw.Max.X, Raw.Max.Y
-                );
-            elseif Type == 'Color3' then
-                -- convert rgb float value to decimal
-                local R, G, B = math.ceil(Raw.R * 255), math.ceil(Raw.G * 255), math.ceil(Raw.B * 255);
-                Value = ('Color3.fromRGB(%s, %s, %s)'):format(
-                    R, G, B
-                );
-            end
-            -- set property
-            if Value == '' then -- if value is not resolved
+            -- transpile value
+            local Transpiled = TranspileValue(Inst.Instance[Member]);
+            -- if transpiled value is not resolved
+            if Transpiled == '' then 
                 if Utils.IsLocal() then
                     Properties = Properties .. '-- '; -- comment property to debug it
                 else
                     continue; -- skip property
                 end;
             end
+            -- append transpiled property to properties
             Properties =  Properties .. ('%s["%s"]["%s"] = %s;\n'):format(
                 Res.Settings.RegName, Inst.Id,
-                Member, Value
+                Member, Transpiled
             );
         end;
     end;
     return Properties;
 end;
+
+local function TranspileAttributes(Res:ConvertionRes, Inst:RegInstance) : string
+    local Attributes = '';
+    local Found = false;
+    -- loop attributes and transpile them
+    for Attribute, RawValue in next, Inst.Instance:GetAttributes() do
+        local Transpiled = TranspileValue(RawValue);
+        -- if transpiled value is not resolved
+        if Transpiled == '' then 
+            if Utils.IsLocal() then
+                Attributes = Attributes .. '-- '; -- comment property to debug it
+            else
+                continue; -- skip property
+            end;
+        end;
+        Found = true;
+        -- append transpiled attribute to attributes
+        Attributes = Attributes .. ('%s["%s"]:SetAttribute(%s, %s);\n'):format(
+            Res.Settings.RegName, Inst.Id,
+            EncapsulateString(Attribute), Transpiled
+        );
+    end;
+    -- apply comment if attributes found
+    if Found and Res.Settings.Comments then
+        Attributes =  '-- Attributes\n' .. Attributes;
+    end;
+    return Attributes;
+end
 
 local function WriteInstances(Res:ConvertionRes)
     for _, Inst in next, Res._INST do
@@ -209,7 +242,7 @@ local function WriteInstances(Res:ConvertionRes)
             Inst.Id,
             Inst.Instance.ClassName,
             Parent,
-            GetProperties(Res, Inst)
+            TranspileProperties(Res, Inst), TranspileAttributes(Res, Inst)
         );
     end
 end;
@@ -242,10 +275,13 @@ local function WriteScripts(Res:ConvertionRes)
         if Res.Settings.Comments then
             Comment = '-- ' .. Script.Instance:GetFullName() .. '\n';
         end
+        -- fix tabulation and apply script variable in the env
+        local Source = ('local script = %s["%s"];\n'):format(
+            Res.Settings.RegName, Script.Id
+        ) .. Script.Instance.Source:gsub('\n', '\n\t');
         -- write
         Res.Source = Res.Source .. Comment .. F_NEWLUA:format(
-            ClosureName, Script.Instance.Source:gsub('\n', '\n\t'), -- fix tabulation
-            ClosureName, Res.Settings.RegName, Script.Id,
+            ClosureName, Source,
             ClosureName
         );
     end

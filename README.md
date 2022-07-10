@@ -13,6 +13,7 @@
 Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) and [@iK4oS](https://github.com/ik4oS) to provide **highly** optimized gui to lua convertions long with:
 #### Features
 * Full roblox-api auto update
+* Attributes support
 * Unlimited gui size
 * Smart properties definition
 * No scripts enviroments polution
@@ -30,8 +31,6 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 1. Select the ScreenGui
 1. Go to your plugins
 1. Press `Start Convertion`
-
-
 
 
 ## Contributing ✨
