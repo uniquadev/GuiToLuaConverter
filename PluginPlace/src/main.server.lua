@@ -25,6 +25,11 @@ local DebugBtn = DEBUG and Toolbar:CreateButton(
 
 -- Plugin Core
 local function Convert()
+    -- check if plugin has write access trought utils function
+    if not Utils.HasWriteAccess() then
+        Alerts.Error(Screen, TITLE, "Please give me write access to scripts");
+        return;
+    end;
     local SelectedParts = Selection:Get();
     local Selected : ScreenGui = SelectedParts[1];
     -- check if selected instance is a screen gui

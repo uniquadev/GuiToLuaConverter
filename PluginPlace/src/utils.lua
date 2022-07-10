@@ -10,6 +10,17 @@ Utils = {
 	IsLocal = function() : boolean
 		return string.find(plugin.Name, ".rbxm") or string.find(plugin.Name, ".lua");
 	end,
+    -- Ceck if plugin has write access to scripts
+    HasWriteAccess = function() : boolean
+        local Success = pcall(function()
+            local Dummy = Instance.new("LocalScript");
+            Dummy.Source = "print('Hello World');";
+            Dummy.Name = "Test";
+            Dummy.Parent = game:GetService("StarterPack");
+            Dummy:Destroy();
+        end);
+        return Success;
+    end,
     -- Generate an output folder inside the workspace with the passed name
     GetOutFolder = function(Name) : Folder
         local Out = Instance.new('Folder', game:GetService('StarterPack'));
