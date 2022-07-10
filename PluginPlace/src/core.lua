@@ -189,6 +189,8 @@ local function TranspileProperties(Res:ConvertionRes, Inst:RegInstance) : string
             );
         end;
     end;
+    -- remove last newline from Properties
+    Properties = Properties:sub(1, -2);
     return Properties;
 end;
 
@@ -299,7 +301,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         _LUA = {},
 		_MOD = {}
     };
-    Res.Source = ('local %s = {};\n'):format(Settings.RegName);
+    Res.Source = ('local %s = {};\n\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
     WriteScripts(Res);
