@@ -16,7 +16,7 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 * Attributes support
 * Unlimited gui size
 * Smart properties definition
-* No scripts enviroments polution
+* No scripts enviroments pollution
 * Simple click and convert ui
 * Open source
 
