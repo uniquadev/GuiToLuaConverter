@@ -282,7 +282,7 @@ local function WriteScripts(Res:ConvertionRes)
         if Script.Instance.Disabled then
             continue;
         end
-        local ClosureName = 'C_' .. Script.Instance.Name .. '_' .. Script.Id;
+        local ClosureName = 'C_' .. Script.Id;
         -- set comment
         local Comment = '';
         if Res.Settings.Comments then
