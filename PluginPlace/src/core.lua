@@ -26,16 +26,17 @@ local F_NEWINST =
 local F_NEWLUA =
 [[
 local function %s()
-    %s
+%s
 end;
 task.spawn(%s);
 ]] -- %s = ClosureName, %s = ModifiedSource, %s = ClosureName
 local F_NEWMOD =
 [=[
 G2L_MODULES[%s["%s"]] = {
-    Closure = function()
-        %s
-    end;
+Closure = function()
+    local script = %s["%s"];
+%s
+end;
 };
 getfenv(G2L_MODULES[%s["%s"]].Closure)["script"] = %s["%s"];
 ]=] -- %s = RegName, %s = Id, %s = Module.Source, %s = RegName, %s = Id, %s = RegName, %s = Id
@@ -272,9 +273,8 @@ local function WriteScripts(Res:ConvertionRes)
     for _, Module in next, Res._MOD do
         Res.Source = Res.Source .. F_NEWMOD:format(
             Res.Settings.RegName, Module.Id,
-            Module.Instance.Source,
             Res.Settings.RegName, Module.Id,
-            Res.Settings.RegName, Module.Id
+            Module.Instance.Source
         );
     end
     for _, Script in next, Res._LUA do
@@ -315,7 +315,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
     WriteScripts(Res);
-    Res.Source = Res.Source .. ('\nreturn %s["%s"];'):format(Settings.RegName, Res._INST[1].Id);
+    Res.Source = Res.Source .. ('\nreturn %s["%s"], require;'):format(Settings.RegName, Res._INST[1].Id);
     -- apply comments
     if Settings.Comments then
         local Info = ('-- Instances: %d | Scripts: %d | Modules: %d\n'):format(
