@@ -38,7 +38,6 @@ Closure = function()
 %s
 end;
 };
-getfenv(G2L_MODULES[%s["%s"]].Closure)["script"] = %s["%s"];
 ]=] -- %s = RegName, %s = Id, %s = Module.Source, %s = RegName, %s = Id, %s = RegName, %s = Id
 
 local BLACKLIST = {
