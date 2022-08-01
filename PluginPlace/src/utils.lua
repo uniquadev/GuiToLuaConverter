@@ -54,7 +54,6 @@ Utils = {
         if not Integrity then
             warn("Can't write the converted script in the LocalScript.");
         end
-        -- TODO 
         return Out;
     end;
 }
