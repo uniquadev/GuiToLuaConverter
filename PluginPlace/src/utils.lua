@@ -10,7 +10,7 @@ Utils = {
 	IsLocal = function() : boolean
 		return string.find(plugin.Name, ".rbxm") or string.find(plugin.Name, ".lua");
 	end,
-    -- Ceck if plugin has write access to scripts
+    -- Check if plugin has write access to scripts
     HasWriteAccess = function() : boolean
         local Success = pcall(function()
             local Dummy = Instance.new("LocalScript");
