@@ -161,7 +161,16 @@ local function TranspileValue(RawValue:any)
         -- remove last comma
         Keypoints = Keypoints:sub(1, -2);
         Value = ('ColorSequence.new{%s}'):format(Keypoints);
-    end
+	elseif Type == "NumberSequence" then
+		local Keypoints = '';
+		for Idx, KeyPoint:NumberSequenceKeypoint in next, RawValue.Keypoints do
+			Keypoints = Keypoints .. ('NumberSequenceKeypoint.new(%.3f, %s),'):format(
+				KeyPoint.Time, TranspileValue(KeyPoint.Value)
+			);
+		end;
+		Keypoints = Keypoints:sub(1, -2);
+		Value = ('NumberSequence.new{%s}'):format(Keypoints);
+	end
     return Value;
 end
 
