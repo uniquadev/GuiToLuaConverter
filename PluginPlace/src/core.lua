@@ -145,6 +145,10 @@ local function TranspileValue(RawValue:any)
             RawValue.Min.X, RawValue.Min.Y,
             RawValue.Max.X, RawValue.Max.Y
         );
+    elseif Type == "Font" then
+        Value = ('Font.new(%s, %s, %s)'):format(
+			EncapsulateString(RawValue.Family), tostring(RawValue.Weight), tostring(RawValue.Style)
+		);
     elseif Type == 'Color3' then
         -- convert rgb float value to decimal
         local R, G, B = math.ceil(RawValue.R * 255), math.ceil(RawValue.G * 255), math.ceil(RawValue.B * 255);
