@@ -1,9 +1,10 @@
 # Project place file
-/build.rbxlx
+*.rbxl
+*.rbxlx
 
 # Roblox Studio lock files
-/*.rbxlx.lock
-/*.rbxl.lock
+*.rbxlx.lock
+*.rbxl.lock
 
 # Python Stuff
 __pycache__/
