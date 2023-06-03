@@ -1,7 +1,7 @@
 # An optimized Gui to Lua converter.
 
 <h2 align="center"> 
-  <a href="https://www.roblox.com/library/10139235293/">
+  <a href="https://create.roblox.com/marketplace/asset/10139235293/GuiToLuaConverter">
     <img src="logo_outlined.png" width="700" alt="G2L logo">
   </a>
   <br>
@@ -22,7 +22,7 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 
 ## Installation 🧰
 
-1. Go to the plugin [page](https://www.roblox.com/library/10139235293/) on Roblox.
+1. Go to the plugin [page](https://create.roblox.com/marketplace/asset/10139235293/GuiToLuaConverter) on Roblox.
 1. Press `Install`
 
 ## Usage 💻
