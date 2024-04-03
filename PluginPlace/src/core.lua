@@ -126,9 +126,11 @@ local function TranspileValue(RawValue:any)
     local Type = typeof(RawValue);
     if Type == 'string' then
         Value = EncapsulateString(RawValue);
-    elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
+    elseif Type == 'boolean' or Type:match('^Enum') then
         Value = tostring(RawValue);
     -- %.3f format might be better
+    elseif Type == 'number' then
+		Value = PrettifyNumber(RawValue)
     elseif Type == 'Vector2' then
         Value = ('Vector2.new(%s, %s)'):format(
             PrettifyNumber(RawValue.X), PrettifyNumber(RawValue.Y)
