@@ -210,7 +210,7 @@ local function TranspileProperties(Res:ConvertionRes, Inst:RegInstance) : string
                 if Utils.IsLocal() then
                     Properties = Properties .. '-- '; -- just comment property to debug it
                 else
-                    Properties = Properties .. ('-- Cannot convert %s\n'):format(Member); -- comment property (not resolved)
+                    Properties = Properties .. ('-- [ERROR] cannot convert %s, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"\n'):format(Member); -- comment property (not resolved)
                     continue; -- skip property
                 end;
             end
