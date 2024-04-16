@@ -45,6 +45,8 @@ local BLACKLIST = {
     Parent = true
 }
 
+local math_round = math.round
+
 --// STRUCT \\--
 
 export type RegInstance = {
@@ -92,6 +94,10 @@ local function DefaultSettings() : Settings
     };
 end
 
+local function PrettifyNumber(number: number): number
+    return math_round(number * 100000) / 100000
+end
+
 -- Load descendants and order them in a flatted tree array, in order to provide a y(x) convertion
 local function LoadDescendants(Res:ConvertionRes, Inst:Instance, Parent:RegInstance) : nil
     -- register instance
@@ -120,30 +126,32 @@ local function TranspileValue(RawValue:any)
     local Type = typeof(RawValue);
     if Type == 'string' then
         Value = EncapsulateString(RawValue);
-    elseif Type == 'number' or Type == 'boolean' or Type:match('^Enum') then
+    elseif Type == 'boolean' or Type:match('^Enum') then
         Value = tostring(RawValue);
     -- %.3f format might be better
+    elseif Type == 'number' then
+		Value = PrettifyNumber(RawValue)
     elseif Type == 'Vector2' then
         Value = ('Vector2.new(%s, %s)'):format(
-            RawValue.X, RawValue.Y
+            PrettifyNumber(RawValue.X), PrettifyNumber(RawValue.Y)
         );
     elseif Type == 'Vector3' then
         Value = ('Vector3.new(%s, %s, %s)'):format(
-            RawValue.X, RawValue.Y, RawValue.Z
+            PrettifyNumber(RawValue.X), PrettifyNumber(RawValue.Y), PrettifyNumber(RawValue.Z)
         );
     elseif Type == 'UDim2' then
         Value = ('UDim2.new(%s, %s, %s, %s)'):format(
-            RawValue.X.Scale, RawValue.X.Offset,
-            RawValue.Y.Scale, RawValue.Y.Offset
+            PrettifyNumber(RawValue.X.Scale), PrettifyNumber(RawValue.X.Offset),
+            PrettifyNumber(RawValue.Y.Scale), PrettifyNumber(RawValue.Y.Offset)
         );
     elseif Type == 'UDim' then
         Value = ('UDim.new(%s, %s)'):format(
-            RawValue.Scale, RawValue.Offset
+            PrettifyNumber(RawValue.Scale), PrettifyNumber(RawValue.Offset)
         );
     elseif Type == 'Rect' then
         Value = ('Rect.new(%s, %s, %s, %s)'):format(
-            RawValue.Min.X, RawValue.Min.Y,
-            RawValue.Max.X, RawValue.Max.Y
+            PrettifyNumber(RawValue.Min.X), PrettifyNumber(RawValue.Min.Y),
+            PrettifyNumber(RawValue.Max.X), PrettifyNumber(RawValue.Max.Y)
         );
     elseif Type == "Font" then
         Value = ('Font.new(%s, %s, %s)'):format(
