@@ -208,8 +208,9 @@ local function TranspileProperties(Res:ConvertionRes, Inst:RegInstance) : string
             -- if transpiled value is not resolved
             if Transpiled == '' then 
                 if Utils.IsLocal() then
-                    Properties = Properties .. '-- '; -- comment property to debug it
+                    Properties = Properties .. '-- '; -- just comment property to debug it
                 else
+                    Properties = Properties .. ('-- Cannot convert %s\n'):format(Member); -- comment property (not resolved)
                     continue; -- skip property
                 end;
             end
