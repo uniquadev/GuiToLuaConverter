@@ -3,10 +3,12 @@ import os
 import json
 
 class RobloxStudioApi:
-    BinaryPath : None | str = r"C:\Users\%username%\AppData\Local\Roblox\Versions\version-161ebe8a914a48fa\RobloxStudioBeta.exe"
+    BinaryPath : None | str = r"C:\Users\%username%\AppData\Local\Roblox\Versions\version-e2bc56a1e4374ca0\RobloxStudioBeta.exe"
     def __init__(self) -> None:
         pass
     
     def DumpJSON(self) -> dict:
         os.system(f"{self.BinaryPath} -API api_dump.json")
+        if not os.path.exists("api_dump.json"):
+            raise FileNotFoundError("api_dump.json not found")
         return json.load(open("api_dump.json"))
