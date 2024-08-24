@@ -1,4 +1,4 @@
-from .pick import pick
+from pick import pick
 from dump import SanitizeDump
 from pathlib import Path
 import json
