@@ -15,27 +15,28 @@ local RbxApi = require(script.Parent.rbxapi);
 local Utils = require(script.Parent.utils);
 local RequireProxy = script.Parent.assets.require;
 local Logo = script.Parent.assets.logo.Value;
+local CollectionService = game:GetService("CollectionService")
 
 --// CONST \\--
 local F_NEWINST = 
-[[
+	[[
 %s["%s"] = Instance.new("%s", %s);
 %s
 %s
-]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties, %s = Attributes
+%s
+]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties, %s = Attributes. % = Tags
 local F_NEWLUA =
-[[
+	[[
 local function %s()
 %s
 end;
 task.spawn(%s);
 ]] -- %s = ClosureName, %s = ModifiedSource, %s = ClosureName
 local F_NEWMOD =
-[=[
+	[=[
 G2L_MODULES[%s["%s"]] = {
 Closure = function()
-    local script = %s["%s"];
-%s
+    local script = %s["%s"];%s
 end;
 };
 ]=] -- %s = RegName, %s = Id, %s = Module.Source, %s = RegName, %s = Id, %s = RegName, %s = Id
@@ -62,7 +63,9 @@ export type ConvertionRes = {
     Source: string,
     _INST: {[number]: RegInstance},
     _LUA: {RegInstance}, -- hold local scripts
-    _MOD: {RegInstance}  -- hold module scripts
+    _MOD: {RegInstance},  -- hold module scripts
+    HasTags: boolean,
+    NumTags: number
 }
 
 export type Settings = {
@@ -254,6 +257,26 @@ local function TranspileAttributes(Res:ConvertionRes, Inst:RegInstance) : string
     return Attributes;
 end
 
+local function TranspileTags(Res:ConvertionRes, Inst:RegInstance) : string
+    local Tags, Found = '', false;
+    -- loop tags and transpile them
+    for Index, TagName in next, CollectionService:GetTags(Inst.Instance) do
+		Res.HasTags = true;
+		Found = true;
+        Res.NumTags += 1;
+        -- append tag to variable 'Tags'
+        Tags = Tags .. ('CollectionService:AddTag(%s["%s"], %s);\n'):format(
+            Res.Settings.RegName, Inst.Id,
+            EncapsulateString(TagName)
+        );
+    end
+    -- apply comment if any instance is tagged
+	if Found and Res.Settings.Comments then
+        Tags = '-- Tags\n' .. Tags;
+    end;
+    return Tags
+end
+
 local function WriteInstances(Res:ConvertionRes)
     for _, Inst in next, Res._INST do
         -- set comment
@@ -277,7 +300,7 @@ local function WriteInstances(Res:ConvertionRes)
             Inst.Id,
             Inst.Instance.ClassName,
             Parent,
-            TranspileProperties(Res, Inst), TranspileAttributes(Res, Inst)
+            TranspileProperties(Res, Inst), TranspileAttributes(Res, Inst), TranspileTags(Res, Inst)
         );
     end
 end;
@@ -330,17 +353,23 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         Source = '',
         _INST = {},
         _LUA = {},
-		_MOD = {}
+		_MOD = {},
+        HasTags = false,
+        NumTags = 0
     };
     Res.Source = ('local %s = {};\n\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
     WriteScripts(Res);
     Res.Source = Res.Source .. ('\nreturn %s["%s"], require;'):format(Settings.RegName, Res._INST[1].Id);
+    -- require collection service if tags found
+    if Res.HasTags then
+        Res.Source = 'local CollectionService = game:GetService("CollectionService");\n' .. Res.Source;
+    end
     -- apply comments
     if Settings.Comments then
-        local Info = ('-- Instances: %d | Scripts: %d | Modules: %d\n'):format(
-            #Res._INST, #Res._LUA, #Res._MOD
+        local Info = ('-- Instances: %d | Scripts: %d | Modules: %d | Tags: %d\n'):format(
+            #Res._INST, #Res._LUA, #Res._MOD, Res.NumTags
         );
         Res.Source = Info .. Res.Source;
     end
