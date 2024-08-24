@@ -3,7 +3,7 @@ import os
 import json
 
 class RobloxStudioApi:
-    BinaryPath : None | str = r"C:\Users\%username%\AppData\Local\Roblox\Versions\version-e2bc56a1e4374ca0\RobloxStudioBeta.exe"
+    BinaryPath : None | str = r"C:\Users\%username%\AppData\Local\Roblox\Versions\version-e60bca3482fe488a\RobloxStudioBeta.exe"
     def __init__(self) -> None:
         pass
     
