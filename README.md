@@ -14,6 +14,7 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 #### Features
 * Full roblox-api auto update
 * Attributes support
+* Tags support
 * Unlimited gui size
 * Smart properties definition
 * No scripts enviroments pollution

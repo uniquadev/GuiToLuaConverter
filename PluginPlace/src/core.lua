@@ -348,7 +348,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         Gui = Gui,
         Settings = Settings,
         Errors = {},
-        Source = 'local CollectionService = game:GetService("CollectionService")\n',
+        Source = 'local CollectionService = game:GetService("CollectionService")\n', -- if no tags were found, we remove this variable on L363
         _INST = {},
         _LUA = {},
 		_MOD = {}
@@ -359,7 +359,9 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     WriteScripts(Res);
     Res.Source = Res.Source .. ('\nreturn %s["%s"], require;'):format(Settings.RegName, Res._INST[1].Id);
     -- remove CollectionService variable if there arent any tags
-    if Res.Source:find("CollectionService:AddTag") == nil then
+    if Res.Source:match("CollectionService:AddTag") == nil then
+        -- 63 is the length of the variable with the newline, we have to add +1 to that which equals 64
+        -- -1 being the end of the string
         Res.Source = Res.Source:sub(64, -1)
     end
     -- apply comments

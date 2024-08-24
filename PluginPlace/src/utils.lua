@@ -43,7 +43,7 @@ Utils = {
             table.insert(Parts, Part);
             Idx += 1;
         end;
-        local Integrity = pcall(function()
+        local Integrity, Error = pcall(function()
             for i, Source in next, Parts do
                 local LocalScript = Instance.new('LocalScript', Out);
                 LocalScript.Name = tostring(i);
@@ -52,7 +52,7 @@ Utils = {
             end
         end);
         if not Integrity then
-            warn("Can't write the converted script in the LocalScript.");
+            warn(`Can't write the converted script in the LocalScript, {Error}.`);
         end
         return Out;
     end;
