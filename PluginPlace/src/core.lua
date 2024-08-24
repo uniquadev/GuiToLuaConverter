@@ -263,9 +263,9 @@ local function TranspileTags(Res:ConvertionRes, Inst:RegInstance) : string
     for Index, TagName in next, CollectionService:GetTags(Inst.Instance) do
         Found = true;
         -- append tag to variable 'Tags'
-        Tags = Tags .. ('CollectionService:AddTag(%s["%s"], %s)'):format(
+        Tags = Tags .. ('CollectionService:AddTag(%s["%s"], %s);\n'):format(
             Res.Settings.RegName, Inst.Id,
-            TagName
+            EncapsulateString(TagName)
         );
     end
     -- apply comment if any instance is tagged
@@ -353,7 +353,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         _LUA = {},
 		_MOD = {}
     };
-    Res.Source = ('local %s = {};\n\n'):format(Settings.RegName);
+    Res.Source = Res.Source..('local %s = {};\n\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
     WriteScripts(Res);

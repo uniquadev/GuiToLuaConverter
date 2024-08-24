@@ -22,15 +22,15 @@ Utils = {
         return Success;
     end,
     -- Generate an output folder inside the workspace with the passed name
-    GetOutFolder = function(Name) : Folder
+    GetOutFolder = function(ins: Instance) : Folder
         local Out = Instance.new('Folder', game:GetService('StarterPack'));
-        Out.Name = Name .. os.time();
+        Out.Name = ins.Name .. ins:GetDebugId();
         return Out;
     end,
     -- Write parse res Source in a disabled LocalScript, and split it in case roblox
     -- limit the write to the buffer
     WriteConvertionRes = function(Res:G2L.ConvertionRes) : Folder
-        local Out = Utils.GetOutFolder(Res.Gui.Name);
+        local Out = Utils.GetOutFolder(Res.Gui);
         -- split support
         local Parts = {};
         local Idx = 0;
