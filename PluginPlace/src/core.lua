@@ -22,7 +22,8 @@ local F_NEWINST =
 %s["%s"] = Instance.new("%s", %s);
 %s
 %s
-]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties, %s = Attributes
+%s
+]]; -- %s = Settings.RegName, %s = Id, %s = ClassName, %s = Parent, %s = Properties, %s = Attributes, %s = Tags
 local F_NEWLUA =
 [[
 local function %s()
@@ -46,6 +47,8 @@ local BLACKLIST = {
 }
 
 local math_round = math.round
+
+local CollectionService = game:GetService("CollectionService")
 
 --// STRUCT \\--
 
@@ -121,7 +124,7 @@ local function LoadDescendants(Res:ConvertionRes, Inst:Instance, Parent:RegInsta
 end;
 
 -- transpile property to lua
-local function TranspileValue(RawValue:any)
+local function TranspileValue(RawValue: any)
     local Value = '';
     local Type = typeof(RawValue);
     if Type == 'string' then
@@ -254,6 +257,24 @@ local function TranspileAttributes(Res:ConvertionRes, Inst:RegInstance) : string
     return Attributes;
 end
 
+local function TranspileTags(Res:ConvertionRes, Inst:RegInstance) : string
+    local Tags, Found = '', false;
+    -- loop tags and transpile them
+    for Index, TagName in next, CollectionService:GetTags(Inst.Instance) do
+        Found = true;
+        -- append tag to variable 'Tags'
+        Tags = Tags .. ('CollectionService:AddTag(%s["%s"], %s)'):format(
+            Res.Settings.RegName, Inst.Id,
+            TagName
+        );
+    end
+    -- apply comment if any instance is tagged
+    if Found and Res.Settings.Comments then
+        Tags = '-- Tags\n' .. Tags;
+    end;
+    return Tags
+end
+
 local function WriteInstances(Res:ConvertionRes)
     for _, Inst in next, Res._INST do
         -- set comment
@@ -277,7 +298,7 @@ local function WriteInstances(Res:ConvertionRes)
             Inst.Id,
             Inst.Instance.ClassName,
             Parent,
-            TranspileProperties(Res, Inst), TranspileAttributes(Res, Inst)
+            TranspileProperties(Res, Inst), TranspileAttributes(Res, Inst), TranspileTags(Res, Inst)
         );
     end
 end;
@@ -327,7 +348,7 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
         Gui = Gui,
         Settings = Settings,
         Errors = {},
-        Source = '',
+        Source = 'local CollectionService = game:GetService("CollectionService")\n',
         _INST = {},
         _LUA = {},
 		_MOD = {}
@@ -337,6 +358,10 @@ local function Convert(Gui:ScreenGui, Settings:Settings?) : ConvertionRes
     WriteInstances(Res);
     WriteScripts(Res);
     Res.Source = Res.Source .. ('\nreturn %s["%s"], require;'):format(Settings.RegName, Res._INST[1].Id);
+    -- remove CollectionService variable if there arent any tags
+    if Res.Source:find("CollectionService:AddTag") == nil then
+        Res.Source = Res.Source:sub(64, -1)
+    end
     -- apply comments
     if Settings.Comments then
         local Info = ('-- Instances: %d | Scripts: %d | Modules: %d\n'):format(
