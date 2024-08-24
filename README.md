@@ -7,7 +7,7 @@
   <br>
   <img src="https://img.shields.io/github/stars/uniquadev/GuiToLuaConverter?color=%238dc776&labelColor=%23101415&style=for-the-badge">
   <img src="https://img.shields.io/github/forks/uniquadev/GuiToLuaConverter?color=%2384a0c6&labelColor=%23101415&style=for-the-badge">
-  <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%23f65b5b&labelColor=%23101415&style=for-the-badge">
+  <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%ffd012&labelColor=%23101415&style=for-the-badge">
 </h2>
 
 Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) and [@iK4oS](https://github.com/ik4oS) to provide **highly** optimized gui to lua convertions long with:
@@ -35,6 +35,15 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 
 ## Contributing ✨
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+### Building rojo project (VSCode)
+1. F1 -> Rojo: Open Menu
+2. Build icon to generate `GuiToLuaConverter.rbxl` studio file
+### Running rojo project (VSCode)
+1. F1 -> Rojo: Open Menu
+2. Run `default.project.json`
+3. Open `GuiToLuaConverter.rbxl` in studio
+4. Plugin -> Rojo Icon -> Connect to Rojo
 
 ## License ⚖
 [Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
