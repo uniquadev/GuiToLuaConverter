@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%ffd012&labelColor=%23101415&style=for-the-badge">
 </h2>
 
-Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) and [@iK4oS](https://github.com/ik4oS) to provide **highly** optimized gui to lua convertions long with:
+Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) to provide **highly** optimized gui to lua convertions long with:
 #### Features
 * Full roblox-api auto update
 * Attributes support
