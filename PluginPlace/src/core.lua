@@ -135,24 +135,24 @@ local function TranspileValue(RawValue: any)
     elseif Type == 'number' then
 		Value = PrettifyNumber(RawValue)
     elseif Type == 'Vector2' then
-        Value = ('Vector2.new(%d, %d)'):format(
+        Value = ('Vector2.new(%s, %s)'):format(
             PrettifyNumber(RawValue.X), PrettifyNumber(RawValue.Y)
         );
     elseif Type == 'Vector3' then
-        Value = ('Vector3.new(%d, %d, %d)'):format(
+        Value = ('Vector3.new(%s, %s, %s)'):format(
             PrettifyNumber(RawValue.X), PrettifyNumber(RawValue.Y), PrettifyNumber(RawValue.Z)
         );
     elseif Type == 'UDim2' then
-        Value = ('UDim2.new(%d, %d, %d, %d)'):format(
+        Value = ('UDim2.new(%s, %s, %s, %s)'):format(
             PrettifyNumber(RawValue.X.Scale), PrettifyNumber(RawValue.X.Offset),
             PrettifyNumber(RawValue.Y.Scale), PrettifyNumber(RawValue.Y.Offset)
         );
     elseif Type == 'UDim' then
-        Value = ('UDim.new(%d, %d)'):format(
+        Value = ('UDim.new(%s, %s)'):format(
             PrettifyNumber(RawValue.Scale), PrettifyNumber(RawValue.Offset)
         );
     elseif Type == 'Rect' then
-        Value = ('Rect.new(%d, %d, %d, %d)'):format(
+        Value = ('Rect.new(%s, %s, %s, %s)'):format(
             PrettifyNumber(RawValue.Min.X), PrettifyNumber(RawValue.Min.Y),
             PrettifyNumber(RawValue.Max.X), PrettifyNumber(RawValue.Max.Y)
         );
@@ -192,7 +192,7 @@ end
 local function TranspileProperties(Res:ConvertionRes, Inst:RegInstance) : string
     local Properties = '';
     local Members = RbxApi.GetProperties(Inst.Instance.ClassName);
-    for Member, Default: RbxApi.ValueObject in pairs(Members) do
+    for Member, Default:RbxApi.ValueObject in pairs(Members) do
         -- special case skip
         if BLACKLIST[Member] then
             continue;         
