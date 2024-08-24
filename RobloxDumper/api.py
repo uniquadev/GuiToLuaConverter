@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import os
 
-def find_executable(base_dir: str, executable_name: str) -> Path:
+def FindExecuteable(base_dir: str, executable_name: str) -> Path:
     """Search for the executable recursively in all subdirectories"""
     for path in Path(base_dir).rglob(executable_name):
         return path  # Return the path of the first found executable
@@ -18,7 +18,7 @@ class RobloxStudioApi:
         pass
     
     def DumpJSON(self) -> dict:
-        binary_path = find_executable(self.VersionsDir, self.ExecutableName) or Path(os.path.join(os.getenv('LOCALAPPDATA'), 'Roblox Studio', self.ExecutableName))
+        binary_path = FindExecuteable(self.VersionsDir, self.ExecutableName) or Path(os.path.join(os.getenv('LOCALAPPDATA'), 'Roblox Studio', self.ExecutableName))
         
         if binary_path is None:
             raise FileNotFoundError(f"Executable {self.ExecutableName} not found.")
