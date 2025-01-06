@@ -1,6 +1,20 @@
 {
-    "Instance": {
+    "Object": {
         "Superclass": "<<<ROOT>>>",
+        "Members": []
+    },
+    "EditableImage": {
+        "Superclass": "Object",
+        "Members": []
+    },
+    "EditableMesh": {
+        "Superclass": "Object",
+        "Members": [
+            "SkinningEnabled"
+        ]
+    },
+    "Instance": {
+        "Superclass": "Object",
         "Members": [
             "Archivable",
             "Capabilities",
@@ -45,6 +59,10 @@
         "Members": []
     },
     "AchievementService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "ActivityHistoryEventService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -240,6 +258,7 @@
             "AccessType",
             "Active",
             "Muted",
+            "MutedByLocalUser",
             "Player",
             "Volume"
         ]
@@ -264,14 +283,17 @@
             "DelayTime",
             "DryLevel",
             "Feedback",
+            "RampTime",
             "WetLevel"
         ]
     },
     "AudioEmitter": {
         "Superclass": "Instance",
         "Members": [
+            "AngleAttenuation",
             "AudioInteractionGroup",
-            "DistanceAttenuation"
+            "DistanceAttenuation",
+            "SimulationFidelity"
         ]
     },
     "AudioEqualizer": {
@@ -316,10 +338,21 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "AudioLimiter": {
+        "Superclass": "Instance",
+        "Members": [
+            "Bypass",
+            "MaxLevel",
+            "Release"
+        ]
+    },
     "AudioListener": {
         "Superclass": "Instance",
         "Members": [
-            "AudioInteractionGroup"
+            "AngleAttenuation",
+            "AudioInteractionGroup",
+            "DistanceAttenuation",
+            "SimulationFidelity"
         ]
     },
     "AudioPitchShifter": {
@@ -386,32 +419,11 @@
         "Superclass": "Instance",
         "Members": []
     },
-    "AvatarGenerationJob": {
-        "Superclass": "Instance",
-        "Members": [
-            "Error",
-            "ErrorMessage",
-            "Progress",
-            "Status"
-        ]
-    },
-    "Avatar2DGenerationJob": {
-        "Superclass": "AvatarGenerationJob",
-        "Members": [
-            "Result"
-        ]
-    },
-    "Avatar3DGenerationJob": {
-        "Superclass": "AvatarGenerationJob",
-        "Members": [
-            "Result"
-        ]
-    },
-    "AvatarGenerationSession": {
+    "AvatarImportService": {
         "Superclass": "Instance",
         "Members": []
     },
-    "AvatarImportService": {
+    "AvatarPreloader": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -552,11 +564,7 @@
     },
     "WrapDeformer": {
         "Superclass": "BaseWrap",
-        "Members": [
-            "Amount",
-            "Enabled",
-            "RenderMeshID"
-        ]
+        "Members": []
     },
     "WrapLayer": {
         "Superclass": "BaseWrap",
@@ -661,17 +669,6 @@
     "BrowserService": {
         "Superclass": "Instance",
         "Members": []
-    },
-    "BubbleChatMessageProperties": {
-        "Superclass": "Instance",
-        "Members": [
-            "BackgroundColor3",
-            "BackgroundTransparency",
-            "FontFace",
-            "TailVisible",
-            "TextColor3",
-            "TextSize"
-        ]
     },
     "BulkImportService": {
         "Superclass": "Instance",
@@ -1256,6 +1253,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "CreatorStoreService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "CrossDMScriptChangeListener": {
         "Superclass": "Instance",
         "Members": []
@@ -1286,16 +1287,6 @@
     },
     "CylinderMesh": {
         "Superclass": "BevelMesh",
-        "Members": []
-    },
-    "EditableMesh": {
-        "Superclass": "DataModelMesh",
-        "Members": [
-            "SkinningEnabled"
-        ]
-    },
-    "RobloxEditableMesh": {
-        "Superclass": "EditableMesh",
         "Members": []
     },
     "FileMesh": {
@@ -1463,14 +1454,8 @@
             "ShowPivotIndicator"
         ]
     },
-    "EditableImage": {
+    "EditableService": {
         "Superclass": "Instance",
-        "Members": [
-            "Size"
-        ]
-    },
-    "RobloxEditableImage": {
-        "Superclass": "EditableImage",
         "Members": []
     },
     "EulerRotationCurve": {
@@ -1509,6 +1494,18 @@
         "Members": []
     },
     "ExperienceStateCaptureService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "ExplorerFilter": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "ExplorerFilterAutocompleter": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "ExplorerServiceVisibilityService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -1638,6 +1635,10 @@
     },
     "MotorFeature": {
         "Superclass": "Feature",
+        "Members": []
+    },
+    "FeatureRestrictionManager": {
+        "Superclass": "Instance",
         "Members": []
     },
     "File": {
@@ -1899,6 +1900,10 @@
             "TextXAlignment",
             "TextYAlignment"
         ]
+    },
+    "RelativeGui": {
+        "Superclass": "GuiObject",
+        "Members": []
     },
     "ScrollingFrame": {
         "Superclass": "GuiObject",
@@ -2569,7 +2574,9 @@
             "FogStart",
             "GeographicLatitude",
             "GlobalShadows",
+            "LightingStyle",
             "OutdoorAmbient",
+            "PrioritizeLightingQuality",
             "ShadowSoftness",
             "Technology",
             "TimeOfDay"
@@ -2670,6 +2677,10 @@
         "Members": []
     },
     "LuauScriptAnalyzerService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "MLModelDeliveryService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -2919,6 +2930,7 @@
             "Anchored",
             "AssemblyAngularVelocity",
             "AssemblyLinearVelocity",
+            "AudioCanCollide",
             "BackSurface",
             "BottomSurface",
             "BrickColor",
@@ -3115,10 +3127,8 @@
             "AirDensity",
             "AllowThirdPartySales",
             "AvatarUnificationMode",
-            "CSGAsyncDynamicCollision",
             "ClientAnimatorThrottling",
             "CurrentCamera",
-            "DecreaseMinimumPartDensityMode",
             "DistributedGameTime",
             "FallenPartsDestroyHeight",
             "FluidForces",
@@ -3129,6 +3139,7 @@
             "MeshPartHeadsAndAccessories",
             "ModelStreamingBehavior",
             "MoverConstraintRootBehavior",
+            "PathfindingUseImprovedSearch",
             "PhysicsSteppingMethod",
             "PlayerCharacterDestroyBehavior",
             "PrimalPhysicsSolver",
@@ -3136,12 +3147,14 @@
             "RenderingCacheOptimizations",
             "ReplicateInstanceDestroySetting",
             "Retargeting",
+            "SandboxedInstanceMode",
             "SignalBehavior",
             "StreamOutBehavior",
             "StreamingEnabled",
             "StreamingIntegrityMode",
             "StreamingMinRadius",
             "StreamingTargetRadius",
+            "TouchEventsUseCollisionGroups",
             "TouchesUseCollisionGroups"
         ]
     },
@@ -3312,6 +3325,10 @@
         "Superclass": "PausedState",
         "Members": []
     },
+    "PerformanceControlService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "PermissionsService": {
         "Superclass": "Instance",
         "Members": []
@@ -3436,6 +3453,7 @@
     "Players": {
         "Superclass": "Instance",
         "Members": [
+            "BanningEnabled",
             "CharacterAutoLoads",
             "RespawnTime",
             "UseStrafingAnimations"
@@ -3443,11 +3461,15 @@
     },
     "Plugin": {
         "Superclass": "Instance",
-        "Members": []
+        "Members": [
+            "DisableUIDragDetectorDrags"
+        ]
     },
     "PluginAction": {
         "Superclass": "Instance",
-        "Members": []
+        "Members": [
+            "Text"
+        ]
     },
     "PluginCapabilities": {
         "Superclass": "Instance",
@@ -3770,7 +3792,17 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "RobloxSerializableInstance": {
+        "Superclass": "Instance",
+        "Members": [
+            "Data"
+        ]
+    },
     "RobloxServerStorage": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "RomarkRbxAnalyticsService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -3913,6 +3945,10 @@
             "SensedPart",
             "SensorMode"
         ]
+    },
+    "FluidForceSensor": {
+        "Superclass": "SensorBase",
+        "Members": []
     },
     "ServerScriptService": {
         "Superclass": "Instance",
@@ -4131,6 +4167,7 @@
         "Superclass": "Instance",
         "Members": [
             "AmbientReverb",
+            "DefaultListenerLocation",
             "DistanceFactor",
             "DopplerScale",
             "RespectFilteringEnabled",
@@ -4155,6 +4192,10 @@
         "Members": []
     },
     "StandalonePluginScripts": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "StartPageService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -4246,6 +4287,7 @@
             "\"local\" Color",
             "\"nil\" Color",
             "\"self\" Color",
+            "ActionOnStopSync",
             "Active Color",
             "Active Hover Over Color",
             "Always Save Script Changes",
@@ -4454,6 +4496,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "StudioUserService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "StudioWidgetsService": {
         "Superclass": "Instance",
         "Members": []
@@ -4465,6 +4511,7 @@
     "StyleRule": {
         "Superclass": "StyleBase",
         "Members": [
+            "Priority",
             "Selector"
         ]
     },
@@ -4529,6 +4576,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "TelemetryService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "TeleportAsyncResult": {
         "Superclass": "Instance",
         "Members": []
@@ -4575,6 +4626,8 @@
             "AutoRuns",
             "Description",
             "ExecuteWithStudioRun",
+            "Is30FpsThrottleEnabled",
+            "IsPhysicsEnvironmentalThrottled",
             "IsSleepAllowed",
             "NumberOfPlayers",
             "SimulateSecondsLag",
@@ -4676,6 +4729,7 @@
         "Superclass": "Instance",
         "Members": [
             "BubbleChatMessageProperties",
+            "ChatWindowMessageProperties",
             "MessageId",
             "Metadata",
             "PrefixText",
@@ -4693,6 +4747,28 @@
             "PrefixText",
             "Text",
             "Translation"
+        ]
+    },
+    "BubbleChatMessageProperties": {
+        "Superclass": "TextChatMessageProperties",
+        "Members": [
+            "BackgroundColor3",
+            "BackgroundTransparency",
+            "FontFace",
+            "TailVisible",
+            "TextColor3",
+            "TextSize"
+        ]
+    },
+    "ChatWindowMessageProperties": {
+        "Superclass": "TextChatMessageProperties",
+        "Members": [
+            "FontFace",
+            "PrefixTextProperties",
+            "TextColor3",
+            "TextSize",
+            "TextStrokeColor3",
+            "TextStrokeTransparency"
         ]
     },
     "TextChatService": {
@@ -4883,7 +4959,10 @@
             "MinDragAngle",
             "MinDragTranslation",
             "ReferenceUIInstance",
-            "ResponseStyle"
+            "ResponseStyle",
+            "SelectionModeDragSpeed",
+            "SelectionModeRotateSpeed",
+            "UIDragSpeedAxisMapping"
         ]
     },
     "UIFlexItem": {
@@ -5005,12 +5084,15 @@
             "ControlMode",
             "Fullscreen",
             "GamepadCameraSensitivity",
+            "GraphicsOptimizationMode",
             "GraphicsQualityLevel",
             "HasEverUsedVR",
             "MasterVolume",
             "MasterVolumeStudio",
+            "MaxQualityEnabled",
             "MouseSensitivity",
             "OnboardingsCompleted",
+            "PartyVoiceVolume",
             "RCCProfilerRecordFrameRate",
             "RCCProfilerRecordTimeFrame",
             "RotationType",
@@ -5153,6 +5235,19 @@
             "CaptureQuality"
         ]
     },
+    "VideoPlayer": {
+        "Superclass": "Instance",
+        "Members": [
+            "Asset",
+            "AutoLoad",
+            "IsPlaying",
+            "Looping",
+            "PlaybackSpeed",
+            "Thumbnail",
+            "TimePosition",
+            "Volume"
+        ]
+    },
     "VideoService": {
         "Superclass": "Instance",
         "Members": []
@@ -5202,6 +5297,10 @@
             "EnableDefaultVoice",
             "UseAudioApi"
         ]
+    },
+    "WebViewService": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "WeldConstraint": {
         "Superclass": "Instance",
