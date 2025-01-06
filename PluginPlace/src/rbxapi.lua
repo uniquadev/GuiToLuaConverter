@@ -95,6 +95,15 @@ local function GetPropertiesWrapper(ClassName:string) : PropertiesRes
     end
     -- get properties and load default values by instantiating a dummy instance
     local Properties = GetProperties(ClassName);
+    if type(Properties) ~= 'table' then
+        warn(
+            string.format(
+                "Unable to retrieve properties for class '%s'.\nPlease ensure you are using the latest version of the GuiToLua plugin. If the issue persists, open a new issue on GitHub and include the class name and plugin version to help update the API.",
+                ClassName
+            )
+        )
+        return {};
+    end
     LoadDefaultValues(ClassName, Properties);
     -- cache store
     CACHE[ClassName] = Properties;
