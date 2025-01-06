@@ -1,4 +1,4 @@
-from pick import pick
+from sys import argv
 from dump import SanitizeDump
 from pathlib import Path
 import json
@@ -10,12 +10,23 @@ from api import RobloxStudioApi as RobloxStudioApiLegacy
 DUMP_JSON = Path(__file__).parent.parent.joinpath("PluginPlace/src/assets/dump.json").absolute()
 
 def main():
-    version, index = pick(["V2", "V1"], 'Please choose what API Dumper you want to use:')
+    if len(argv) < 2:
+        print("Please specify an index for the API to use.\nUsage: python main.py <index[0,1]>")
+        return
     
-    if index == 0:
-        Api = RobloxStudioApiV2()
-    elif index == 1:
-        Api = RobloxStudioApiLegacy()
+    try:
+        index = int(argv[1])
+    except ValueError:
+        index = -1
+    
+    match index:
+        case 0:
+            Api = RobloxStudioApiLegacy()
+        case 1:
+            Api = RobloxStudioApiV2()
+        case _:
+            print("Invalid index.")
+            return
     
     DumpJSON = Api.DumpJSON()
     JSON = SanitizeDump(DumpJSON)
