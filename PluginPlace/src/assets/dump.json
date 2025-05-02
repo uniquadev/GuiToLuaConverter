@@ -3,6 +3,18 @@
         "Superclass": "<<<ROOT>>>",
         "Members": []
     },
+    "Capture": {
+        "Superclass": "Object",
+        "Members": []
+    },
+    "ScreenshotCapture": {
+        "Superclass": "Capture",
+        "Members": []
+    },
+    "ConfigSnapshot": {
+        "Superclass": "Object",
+        "Members": []
+    },
     "EditableImage": {
         "Superclass": "Object",
         "Members": []
@@ -177,10 +189,6 @@
         "Superclass": "Instance",
         "Members": []
     },
-    "AssetImportSession": {
-        "Superclass": "Instance",
-        "Members": []
-    },
     "AssetManagerService": {
         "Superclass": "Instance",
         "Members": []
@@ -229,7 +237,20 @@
     "AudioAnalyzer": {
         "Superclass": "Instance",
         "Members": [
-            "SpectrumEnabled"
+            "SpectrumEnabled",
+            "WindowSize"
+        ]
+    },
+    "AudioChannelMixer": {
+        "Superclass": "Instance",
+        "Members": [
+            "Layout"
+        ]
+    },
+    "AudioChannelSplitter": {
+        "Superclass": "Instance",
+        "Members": [
+            "Layout"
         ]
     },
     "AudioChorus": {
@@ -246,6 +267,7 @@
         "Members": [
             "Attack",
             "Bypass",
+            "Editor",
             "MakeupGain",
             "Ratio",
             "Release",
@@ -342,6 +364,7 @@
         "Superclass": "Instance",
         "Members": [
             "Bypass",
+            "Editor",
             "MaxLevel",
             "Release"
         ]
@@ -359,13 +382,14 @@
         "Superclass": "Instance",
         "Members": [
             "Bypass",
-            "Pitch"
+            "Pitch",
+            "WindowSize"
         ]
     },
     "AudioPlayer": {
         "Superclass": "Instance",
         "Members": [
-            "AssetId",
+            "Asset",
             "AutoLoad",
             "IsPlaying",
             "LoopRegion",
@@ -374,6 +398,12 @@
             "PlaybackSpeed",
             "TimePosition",
             "Volume"
+        ]
+    },
+    "AudioRecorder": {
+        "Superclass": "Instance",
+        "Members": [
+            "IsRecording"
         ]
     },
     "AudioReverb": {
@@ -406,6 +436,24 @@
             "Tag",
             "Title"
         ]
+    },
+    "AudioTextToSpeech": {
+        "Superclass": "Instance",
+        "Members": [
+            "IsPlaying",
+            "Looping",
+            "Pitch",
+            "PlaybackSpeed",
+            "Speed",
+            "Text",
+            "TimePosition",
+            "VoiceId",
+            "Volume"
+        ]
+    },
+    "AuroraScriptObject": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "AvatarChatService": {
         "Superclass": "Instance",
@@ -507,7 +555,6 @@
             "RigType",
             "RigVisualization",
             "ScaleUnit",
-            "UseSceneOriginAsCFrame",
             "UseSceneOriginAsPivot",
             "UsesCages",
             "ValidateUgcBody",
@@ -556,6 +603,7 @@
     "BaseWrap": {
         "Superclass": "Instance",
         "Members": [
+            "CageMeshContent",
             "CageMeshId",
             "CageOrigin",
             "HSRAssetId",
@@ -576,6 +624,7 @@
             "Enabled",
             "Order",
             "Puffiness",
+            "ReferenceMeshContent",
             "ReferenceMeshId",
             "ReferenceOrigin",
             "ShrinkFactor"
@@ -670,6 +719,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "BugReporterService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "BulkImportService": {
         "Superclass": "Instance",
         "Members": []
@@ -693,22 +746,6 @@
     "CalloutService": {
         "Superclass": "Instance",
         "Members": []
-    },
-    "Camera": {
-        "Superclass": "Instance",
-        "Members": [
-            "CFrame",
-            "CameraSubject",
-            "CameraType",
-            "DiagonalFieldOfView",
-            "FieldOfView",
-            "FieldOfViewMode",
-            "Focus",
-            "HeadLocked",
-            "HeadScale",
-            "MaxAxisFieldOfView",
-            "VRTiltAndRollEnabled"
-        ]
     },
     "CaptureService": {
         "Superclass": "Instance",
@@ -873,6 +910,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "ConfigService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "Configuration": {
         "Superclass": "Instance",
         "Members": []
@@ -999,6 +1040,7 @@
             "MaxPlanarAxesForce",
             "PlaneVelocity",
             "PrimaryTangentAxis",
+            "ReactionForceEnabled",
             "RelativeTo",
             "SecondaryTangentAxis",
             "VectorVelocity",
@@ -1266,6 +1308,10 @@
         "Members": []
     },
     "CustomEventReceiver": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "CustomLog": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -1591,6 +1637,7 @@
         "Members": [
             "Color3",
             "Texture",
+            "TextureContent",
             "Transparency",
             "ZIndex"
         ]
@@ -1603,6 +1650,10 @@
             "StudsPerTileU",
             "StudsPerTileV"
         ]
+    },
+    "FacialAgeEstimationService": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "FacialAnimationRecordingService": {
         "Superclass": "Instance",
@@ -1638,6 +1689,10 @@
         "Members": []
     },
     "FeatureRestrictionManager": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "FeedService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -1710,6 +1765,10 @@
         "Members": [
             "GamepadCursorEnabled"
         ]
+    },
+    "GenerationService": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "GenericChallengeService": {
         "Superclass": "Instance",
@@ -1802,8 +1861,7 @@
         "Superclass": "GuiObject",
         "Members": [
             "GroupColor3",
-            "GroupTransparency",
-            "ResolutionScale"
+            "GroupTransparency"
         ]
     },
     "Frame": {
@@ -1816,7 +1874,9 @@
         "Superclass": "GuiObject",
         "Members": [
             "AutoButtonColor",
+            "HoverHapticEffect",
             "Modal",
+            "PressHapticEffect",
             "Selected",
             "Style"
         ]
@@ -1825,12 +1885,15 @@
         "Superclass": "GuiButton",
         "Members": [
             "HoverImage",
+            "HoverImageContent",
             "Image",
             "ImageColor3",
+            "ImageContent",
             "ImageRectOffset",
             "ImageRectSize",
             "ImageTransparency",
             "PressedImage",
+            "PressedImageContent",
             "ResampleMode",
             "ScaleType",
             "SliceCenter",
@@ -1869,6 +1932,7 @@
         "Members": [
             "Image",
             "ImageColor3",
+            "ImageContent",
             "ImageRectOffset",
             "ImageRectSize",
             "ImageTransparency",
@@ -1953,6 +2017,18 @@
             "TextWrapped",
             "TextXAlignment",
             "TextYAlignment"
+        ]
+    },
+    "VideoDisplay": {
+        "Superclass": "GuiObject",
+        "Members": [
+            "ResampleMode",
+            "ScaleType",
+            "TileSize",
+            "VideoColor3",
+            "VideoRectOffset",
+            "VideoRectSize",
+            "VideoTransparency"
         ]
     },
     "VideoFrame": {
@@ -2152,7 +2228,8 @@
     "WireframeHandleAdornment": {
         "Superclass": "HandleAdornment",
         "Members": [
-            "Scale"
+            "Scale",
+            "Thickness"
         ]
     },
     "ParabolaAdornment": {
@@ -2246,6 +2323,10 @@
         ]
     },
     "HapticService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "HeapProfilerService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -2368,6 +2449,121 @@
             "WidthScale"
         ]
     },
+    "HumanoidRigDescription": {
+        "Superclass": "Instance",
+        "Members": [
+            "Chest",
+            "ChestRangeMax",
+            "ChestRangeMin",
+            "ChestSize",
+            "ChestTposeAdjustment",
+            "Head",
+            "HeadRangeMax",
+            "HeadRangeMin",
+            "HeadSize",
+            "HeadTposeAdjustment",
+            "LeftAnkle",
+            "LeftAnkleRangeMax",
+            "LeftAnkleRangeMin",
+            "LeftAnkleSize",
+            "LeftAnkleTposeAdjustment",
+            "LeftClavicle",
+            "LeftClavicleRangeMax",
+            "LeftClavicleRangeMin",
+            "LeftClavicleSize",
+            "LeftClavicleTposeAdjustment",
+            "LeftElbow",
+            "LeftElbowRangeMax",
+            "LeftElbowRangeMin",
+            "LeftElbowSize",
+            "LeftElbowTposeAdjustment",
+            "LeftHip",
+            "LeftHipRangeMax",
+            "LeftHipRangeMin",
+            "LeftHipSize",
+            "LeftHipTposeAdjustment",
+            "LeftKnee",
+            "LeftKneeRangeMax",
+            "LeftKneeRangeMin",
+            "LeftKneeSize",
+            "LeftKneeTposeAdjustment",
+            "LeftShoulder",
+            "LeftShoulderRangeMax",
+            "LeftShoulderRangeMin",
+            "LeftShoulderSize",
+            "LeftShoulderTposeAdjustment",
+            "LeftToes",
+            "LeftToesRangeMax",
+            "LeftToesRangeMin",
+            "LeftToesSize",
+            "LeftToesTposeAdjustment",
+            "LeftWrist",
+            "LeftWristRangeMax",
+            "LeftWristRangeMin",
+            "LeftWristSize",
+            "LeftWristTposeAdjustment",
+            "Neck",
+            "NeckRangeMax",
+            "NeckRangeMin",
+            "NeckSize",
+            "NeckTposeAdjustment",
+            "Pelvis",
+            "PelvisRangeMax",
+            "PelvisRangeMin",
+            "PelvisSize",
+            "PelvisTposeAdjustment",
+            "RightAnkle",
+            "RightAnkleRangeMax",
+            "RightAnkleRangeMin",
+            "RightAnkleSize",
+            "RightAnkleTposeAdjustment",
+            "RightClavicle",
+            "RightClavicleRangeMax",
+            "RightClavicleRangeMin",
+            "RightClavicleSize",
+            "RightClavicleTposeAdjustment",
+            "RightElbow",
+            "RightElbowRangeMax",
+            "RightElbowRangeMin",
+            "RightElbowSize",
+            "RightElbowTposeAdjustment",
+            "RightHip",
+            "RightHipRangeMax",
+            "RightHipRangeMin",
+            "RightHipSize",
+            "RightHipTposeAdjustment",
+            "RightKnee",
+            "RightKneeRangeMax",
+            "RightKneeRangeMin",
+            "RightKneeSize",
+            "RightKneeTposeAdjustment",
+            "RightShoulder",
+            "RightShoulderRangeMax",
+            "RightShoulderRangeMin",
+            "RightShoulderSize",
+            "RightShoulderTposeAdjustment",
+            "RightToes",
+            "RightToesRangeMax",
+            "RightToesRangeMin",
+            "RightToesSize",
+            "RightToesTposeAdjustment",
+            "RightWrist",
+            "RightWristRangeMax",
+            "RightWristRangeMin",
+            "RightWristSize",
+            "RightWristTposeAdjustment",
+            "Root",
+            "RootRangeMax",
+            "RootRangeMin",
+            "RootSize",
+            "RootTposeAdjustment",
+            "Waist",
+            "WaistRangeMax",
+            "WaistRangeMin",
+            "WaistSize",
+            "WaistTposeAdjustment"
+        ]
+    },
     "IKControl": {
         "Superclass": "Instance",
         "Members": [
@@ -2396,6 +2592,14 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "ImportSession": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "AssetImportSession": {
+        "Superclass": "ImportSession",
+        "Members": []
+    },
     "IncrementalPatchBuilder": {
         "Superclass": "Instance",
         "Members": [
@@ -2404,6 +2608,36 @@
             "HighCompression",
             "SerializePatch",
             "ZstdCompression"
+        ]
+    },
+    "InputAction": {
+        "Superclass": "Instance",
+        "Members": [
+            "Enabled",
+            "Type"
+        ]
+    },
+    "InputBinding": {
+        "Superclass": "Instance",
+        "Members": [
+            "Down",
+            "KeyCode",
+            "Left",
+            "PressedThreshold",
+            "ReleasedThreshold",
+            "Right",
+            "Scale",
+            "UIButton",
+            "Up",
+            "Vector2Scale"
+        ]
+    },
+    "InputContext": {
+        "Superclass": "Instance",
+        "Members": [
+            "Enabled",
+            "Priority",
+            "Sink"
         ]
     },
     "InputObject": {
@@ -2590,6 +2824,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "LiveSyncService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "LocalStorageService": {
         "Superclass": "Instance",
         "Members": []
@@ -2689,6 +2927,10 @@
         "Members": []
     },
     "MarketplaceService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "MatchmakingService": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -3029,8 +3271,10 @@
         "Superclass": "TriangleMeshPart",
         "Members": [
             "DoubleSided",
+            "MeshContent",
             "MeshId",
             "RenderFidelity",
+            "TextureContent",
             "TextureID"
         ]
     },
@@ -3072,6 +3316,22 @@
             "ThrottleFloat",
             "Torque",
             "TurnSpeed"
+        ]
+    },
+    "Camera": {
+        "Superclass": "PVInstance",
+        "Members": [
+            "CFrame",
+            "CameraSubject",
+            "CameraType",
+            "DiagonalFieldOfView",
+            "FieldOfView",
+            "FieldOfViewMode",
+            "Focus",
+            "HeadLocked",
+            "HeadScale",
+            "MaxAxisFieldOfView",
+            "VRTiltAndRollEnabled"
         ]
     },
     "Model": {
@@ -3130,6 +3390,7 @@
             "ClientAnimatorThrottling",
             "CurrentCamera",
             "DistributedGameTime",
+            "FallHeightEnabled",
             "FallenPartsDestroyHeight",
             "FluidForces",
             "GlobalWind",
@@ -3140,6 +3401,7 @@
             "ModelStreamingBehavior",
             "MoverConstraintRootBehavior",
             "PathfindingUseImprovedSearch",
+            "PhysicsImprovedSleep",
             "PhysicsSteppingMethod",
             "PlayerCharacterDestroyBehavior",
             "PrimalPhysicsSolver",
@@ -3208,6 +3470,10 @@
         "Members": []
     },
     "DataStoreVersionPages": {
+        "Superclass": "Pages",
+        "Members": []
+    },
+    "FeedPages": {
         "Superclass": "Pages",
         "Members": []
     },
@@ -3389,6 +3655,10 @@
             "UseCSGv2"
         ]
     },
+    "PlaceAssetIdsService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "PlaceStatsService": {
         "Superclass": "Instance",
         "Members": []
@@ -3429,9 +3699,28 @@
             "Neutral",
             "ReplicationFocus",
             "RespawnLocation",
+            "StepIdOffset",
             "Team",
             "TeamColor",
             "UserId"
+        ]
+    },
+    "PlayerData": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "PlayerDataRecord": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "PlayerDataRecordConfig": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "PlayerDataService": {
+        "Superclass": "Instance",
+        "Members": [
+            "LoadFailureBehavior"
         ]
     },
     "PlayerEmulatorService": {
@@ -3462,7 +3751,8 @@
     "Plugin": {
         "Superclass": "Instance",
         "Members": [
-            "DisableUIDragDetectorDrags"
+            "DisableUIDragDetectorDrags",
+            "IsDebuggable"
         ]
     },
     "PluginAction": {
@@ -3950,6 +4240,10 @@
         "Superclass": "SensorBase",
         "Members": []
     },
+    "SerializationService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "ServerScriptService": {
         "Superclass": "Instance",
         "Members": [
@@ -3999,10 +4293,6 @@
         "Superclass": "Instance",
         "Members": []
     },
-    "ShorelineUpgraderService": {
-        "Superclass": "Instance",
-        "Members": []
-    },
     "Sky": {
         "Superclass": "Instance",
         "Members": [
@@ -4013,6 +4303,7 @@
             "SkyboxDn",
             "SkyboxFt",
             "SkyboxLf",
+            "SkyboxOrientation",
             "SkyboxRt",
             "SkyboxUp",
             "StarCount",
@@ -4167,6 +4458,7 @@
         "Superclass": "Instance",
         "Members": [
             "AmbientReverb",
+            "CharacterSoundsUseNewApi",
             "DefaultListenerLocation",
             "DistanceFactor",
             "DopplerScale",
@@ -4220,6 +4512,7 @@
             "CharacterMaxSlopeAngle",
             "CharacterUseJumpPower",
             "CharacterWalkSpeed",
+            "ClassicDeath",
             "DevCameraOcclusionMode",
             "DevComputerCameraMovementMode",
             "DevComputerMovementMode",
@@ -4232,6 +4525,7 @@
             "LoadCharacterLayeredClothing ",
             "LuaCharacterController",
             "NameDisplayDistance",
+            "RagdollDeath",
             "UserEmotesEnabled"
         ]
     },
@@ -4287,6 +4581,7 @@
             "\"local\" Color",
             "\"nil\" Color",
             "\"self\" Color",
+            "ActionOnAutoResumeSync",
             "ActionOnStopSync",
             "Active Color",
             "Active Hover Over Color",
@@ -4299,6 +4594,8 @@
             "Auto Indent Rule",
             "Auto-Recovery Enabled",
             "Auto-Recovery Interval (Minutes)",
+            "AutoResumeSyncOnPlaceOpen",
+            "AutocompleteAcceptanceBehavior",
             "Automatically trigger AI Code Completion",
             "Background Color",
             "Basic Objects Display Mode",
@@ -4312,14 +4609,17 @@
             "Camera Speed Adjust Binding",
             "Camera Zoom to Mouse Position",
             "CameraAdaptiveSpeed",
+            "CameraOrbitSensitivity",
+            "CameraPanSensitivity",
+            "CameraShiftFactor",
             "CameraTweenFocus",
+            "CameraZoomSpeed",
             "Clear Output On Start",
             "CommandBarLocalState",
             "Comment Color",
             "Current Line Highlight Color",
             "Debugger Current Line Color",
             "Debugger Error Line Color",
-            "DefaultScriptFileDir",
             "DeprecatedObjectsShown",
             "DisplayLanguage",
             "DraggerActiveColor",
@@ -4347,6 +4647,7 @@
             "Enable Type Hover",
             "EnableCodeAssist",
             "EnableIndentationRulers",
+            "EnableSelectionTooltips",
             "Error Color",
             "Find Selection Background Color",
             "Font",
@@ -4455,6 +4756,12 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "StudioCameraService": {
+        "Superclass": "Instance",
+        "Members": [
+            "LockCameraSpeed"
+        ]
+    },
     "StudioData": {
         "Superclass": "Instance",
         "Members": []
@@ -4547,6 +4854,10 @@
             "TexturePack"
         ]
     },
+    "SystemThemeService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "TaskScheduler": {
         "Superclass": "Instance",
         "Members": [
@@ -4626,11 +4937,11 @@
             "AutoRuns",
             "Description",
             "ExecuteWithStudioRun",
-            "Is30FpsThrottleEnabled",
             "IsPhysicsEnvironmentalThrottled",
             "IsSleepAllowed",
             "NumberOfPlayers",
             "SimulateSecondsLag",
+            "ThrottlePhysicsToRealtime",
             "Timeout"
         ]
     },
@@ -5069,6 +5380,10 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "UniqueIdLookupService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "UnvalidatedAssetService": {
         "Superclass": "Instance",
         "Members": []
@@ -5239,11 +5554,10 @@
         "Superclass": "Instance",
         "Members": [
             "Asset",
-            "AutoLoad",
-            "IsPlaying",
+            "AutoLoadInStudio",
+            "AutoPlayInStudio",
             "Looping",
             "PlaybackSpeed",
-            "Thumbnail",
             "TimePosition",
             "Volume"
         ]
@@ -5294,9 +5608,18 @@
     "VoiceChatService": {
         "Superclass": "Instance",
         "Members": [
+            "DefaultDistanceAttenuation",
             "EnableDefaultVoice",
             "UseAudioApi"
         ]
+    },
+    "WebSocketClient": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "WebSocketService": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "WebViewService": {
         "Superclass": "Instance",

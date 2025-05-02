@@ -3,11 +3,10 @@ from dump import SanitizeDump
 from pathlib import Path
 import json
 
-# Import necessary classes/functions from api_v2 and api
-from api_v2 import RobloxStudioApi as RobloxStudioApiV2
+# from api_v2 import RobloxStudioApi as RobloxStudioApiV2
 from api import RobloxStudioApi as RobloxStudioApiLegacy
 
-DUMP_JSON = Path(__file__).parent.parent.joinpath("PluginPlace/src/assets/dump.json").absolute()
+DUMP_PATH = Path(__file__).parent.parent.joinpath("PluginPlace/src/assets/dump.json").absolute()
 
 def main():
     if len(argv) < 2:
@@ -23,7 +22,8 @@ def main():
         case 0:
             Api = RobloxStudioApiLegacy()
         case 1:
-            Api = RobloxStudioApiV2()
+            # Api = RobloxStudioApiV2()
+            pass
         case _:
             print("Invalid index.")
             return
@@ -32,7 +32,7 @@ def main():
     JSON = SanitizeDump(DumpJSON)
     
     # Writing JSON to file
-    with open(DUMP_JSON, "w+") as f:
+    with open(DUMP_PATH, "w+") as f:
         f.write(json.dumps(JSON, indent=4))
     
 if __name__ == '__main__':
