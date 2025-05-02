@@ -185,6 +185,13 @@ local function TranspileValue(RawValue:any)
 		end;
 		Keypoints = Keypoints:sub(1, -2);
 		Value = ('NumberSequence.new{%s}'):format(Keypoints);
+	elseif Type == "CFrame" then
+		local Position = RawValue.Position;
+		local LookVector = RawValue.LookVector;
+		Value = ('CFrame.new(Vector3.new(%s, %s, %s), Vector3.new(%s, %s, %s))'):format(
+			PrettifyNumber(Position.X), PrettifyNumber(Position.Y), PrettifyNumber(Position.Z),
+			PrettifyNumber(LookVector.X), PrettifyNumber(LookVector.Y), PrettifyNumber(LookVector.Z)
+		)
 	end
     return Value;
 end
