@@ -7,39 +7,6 @@
       "Plugin": {
         "$path": "PluginPlace/src/"
       }
-    },
-
-    "Workspace": {
-      "Baseplate": {
-        "$className": "Part",
-        "$properties": {
-          "Color": [0.129412, 0.403922, 0.572549],
-          "Material": "WoodPlanks",
-          "Size": [200, 1, 200],
-          "Anchored": true
-        }
-      },
-      "$properties": {
-        "FilteringEnabled": true
-      }
-    },
-    "Lighting": {
-      "$properties": {
-        "Ambient": [
-          0,
-          0,
-          0
-        ],
-        "Brightness": 2,
-        "GlobalShadows": true,
-        "Outlines": false,
-        "Technology": "Voxel"
-      }
-    },
-    "SoundService": {
-      "$properties": {
-        "RespectFilteringEnabled": true
-      }
     }
   }
 }

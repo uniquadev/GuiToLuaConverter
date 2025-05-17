@@ -41,9 +41,9 @@ local function Convert()
     -- convert
     local Res = G2L.Convert(Selected);
     local Out = Utils.WriteConvertionRes(Res);
-    -- select the out folder
-    Selection:Set(Out:GetChildren());
-    plugin:OpenScript(Out:FindFirstChildOfClass('LocalScript'));
+    -- select the out script and open it
+    Selection:Set({Out});
+    plugin:OpenScript(Out);
     Alerts.Success(Screen, TITLE, ("%s successfully converted"):format(Res.Gui.Name));
     ConvertBtn.Enabled = true;
 end;
