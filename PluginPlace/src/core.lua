@@ -43,7 +43,8 @@ end;
 
 local BLACKLIST = {
     Source = true,
-    Parent = true
+    Parent = true,
+    ImageContent = true
 }
 
 local math_round = math.round
