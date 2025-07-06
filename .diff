@@ -1,0 +1,14 @@
+diff --git a/PluginPlace/src/core.lua b/PluginPlace/src/core.lua
+index 73472c9..917c3e5 100644
+--- a/PluginPlace/src/core.lua
++++ b/PluginPlace/src/core.lua
+@@ -43,7 +43,8 @@ end;
+ 
+ local BLACKLIST = {
+     Source = true,
+-    Parent = true
++    Parent = true,
++    ImageContent = true
+ }
+ 
+ local math_round = math.round
