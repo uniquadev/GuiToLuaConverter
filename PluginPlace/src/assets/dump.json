@@ -5641,5 +5641,17 @@
             "TargetInstance",
             "TargetName"
         ]
+    },
+    {
+      "Name": "UIStroke",
+      "Superclass": "Instance",
+      "Members": [
+        { "Name": "ApplyStrokeMode", "Value": "Contextual" },
+        { "Name": "Color", "Value": "Color3.new(0, 0, 0)" },
+        { "Name": "Enabled", "Value": true },
+        { "Name": "LineJoinMode", "Value": "Round" },
+        { "Name": "Thickness", "Value": 1 },
+        { "Name": "Transparency", "Value": 0 }
+      ]
     }
 }
