@@ -10,14 +10,14 @@
   <img src="https://img.shields.io/github/repo-size/uniquadev/GuiToLuaConverter?color=%ffd012&labelColor=%23101415&style=for-the-badge">
 </h2>
 
-Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) to provide **highly** optimized gui to lua convertions long with:
+Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev](https://github.com/uniquadev) to provide **highly** optimized GUI to Lua conversions, along with:
 #### Features
 * Full roblox-api auto update
 * Attributes support
 * Tags support
 * Unlimited gui size
 * Smart properties definition
-* No scripts enviroments pollution
+* No script environment pollution
 * Simple click and convert ui
 * Open source
 
@@ -31,7 +31,7 @@ Project started as a revamp of an old GuiToLua plugin, Started from [@uniquadev]
 1. Create an UI in Roblox Studio
 1. Select the ScreenGui
 1. Go to your plugins
-1. Press `Start Convertion`
+1. Press `Start Conversion`
 
 
 ## Contributing ✨
@@ -45,6 +45,12 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 2. Run `default.project.json`
 3. Open `GuiToLuaConverter.rbxl` in studio
 4. Plugin -> Rojo Icon -> Connect to Rojo
+
+## Support ☕
+
+GuiToLuaConverter is free and open source. If it saved you hours of hand-writing UI code, a coffee helps me keep the API dump up to date with every Roblox release.
+
+<a href="https://buymeacoffee.com/uniqua"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="48"></a>
 
 ## License ⚖
 [Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
