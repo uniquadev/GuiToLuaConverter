@@ -12,25 +12,28 @@ Utils = {
 	end,
     -- Check if plugin has write access to scripts
     HasWriteAccess = function() : boolean
+        local Dummy = Instance.new("LocalScript");
         local Success = pcall(function()
-            local Dummy = Instance.new("LocalScript");
+            -- UpdateSourceAsync is only reliable on parented scripts
+            Dummy.Name = "Test";
+            Dummy.Parent = game:GetService("StarterPack");
             game:GetService("ScriptEditorService"):UpdateSourceAsync(Dummy, function()
                 return "print('Hello World');";
             end);
-            Dummy.Name = "Test";
-            Dummy.Parent = game:GetService("StarterPack");
-            Dummy:Destroy();
         end);
+        Dummy:Destroy();
         return Success;
     end,
-    -- Write parse res Source in a disabled LocalScript, and split it in case roblox
-    -- limit the write to the buffer
+    -- Write parse res Source in a LocalScript. UpdateSourceAsync isn't affected by the
+    -- 200k characters limit of Script.Source, so there is no need to split the output
     WriteConvertionRes = function(Res:G2L.ConvertionRes) : Folder
+        -- carriage returns can make UpdateSourceAsync fail
+        local Source = Res.Source:gsub('\r\n?', '\n');
         local Integrity, ScriptOrMsg = pcall(function()
             local LocalScript = Instance.new('LocalScript', game:GetService("StarterPack"));
             LocalScript.Name = `{Res.Gui.Name}_{Res.Gui:GetDebugId(0)}`;
             game:GetService("ScriptEditorService"):UpdateSourceAsync(LocalScript, function()
-                return Res.Source
+                return Source
             end);
             return LocalScript
         end);

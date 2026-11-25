@@ -35,13 +35,22 @@ local function Convert()
 
     ConvertBtn.Enabled = false;
 
-    local Res = G2L.Convert(Selected);
-    local Out = Utils.WriteConvertionRes(Res);
+    local Success, Err = pcall(function()
+        local Res = G2L.Convert(Selected);
+        local Out = Utils.WriteConvertionRes(Res);
 
-    Selection:Set({Out});
-    plugin:OpenScript(Out);
-    Alerts.Success(Screen, TITLE, ("%s successfully converted"):format(Res.Gui.Name));
-    ConvertBtn.Enabled = true;
+        Selection:Set({Out});
+        plugin:OpenScript(Out);
+    end);
+
+    ConvertBtn.Enabled = true; -- keep the button usable even when the conversion fails
+
+    if not Success then
+        warn(Err);
+        Alerts.Error(Screen, TITLE, "Conversion failed, check the output");
+        return;
+    end;
+    Alerts.Success(Screen, TITLE, ("%s successfully converted"):format(Selected.Name));
 end;
 
 local function PropertiesCheck()
