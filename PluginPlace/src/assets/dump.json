@@ -53,18 +53,7 @@
     },
     "FeatureSearchParams": {
         "Superclass": "Object",
-        "Members": [
-            "AnchorCostScale",
-            "AnchorIgnoresTagFilters",
-            "AnchorRow",
-            "MaxDistance",
-            "MaxResults",
-            "NormalizationKey",
-            "ReturnChannelCosts",
-            "SelectionMode",
-            "SelectionSeed",
-            "SelectionTemperature"
-        ]
+        "Members": []
     },
     "Instance": {
         "Superclass": "Object",
@@ -105,6 +94,10 @@
             "AccessoryType"
         ]
     },
+    "Hat": {
+        "Superclass": "Accoutrement",
+        "Members": []
+    },
     "AchievementService": {
         "Superclass": "Instance",
         "Members": []
@@ -144,7 +137,6 @@
     "Animation": {
         "Superclass": "Instance",
         "Members": [
-            "AnimationContent",
             "AnimationId"
         ]
     },
@@ -487,7 +479,6 @@
         "Superclass": "Instance",
         "Members": [
             "Asset",
-            "AudioContent",
             "AutoLoad",
             "AutoPlay",
             "LoopRegion",
@@ -591,6 +582,10 @@
             "Profile",
             "Volume"
         ]
+    },
+    "AuroraScriptObject": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "AvatarAbilityRules": {
         "Superclass": "Instance",
@@ -883,12 +878,7 @@
     },
     "BaseWrap": {
         "Superclass": "Instance",
-        "Members": [
-            "CageMeshContent",
-            "CageMeshId",
-            "CageOrigin",
-            "ImportOrigin"
-        ]
+        "Members": []
     },
     "WrapDeformer": {
         "Superclass": "BaseWrap",
@@ -898,13 +888,9 @@
         "Superclass": "BaseWrap",
         "Members": [
             "AutoSkin",
-            "BindOffset",
             "Enabled",
             "NonUniformScaleContent",
             "Order",
-            "ReferenceMeshContent",
-            "ReferenceMeshId",
-            "ReferenceOrigin",
             "RotateUniformScaleContent",
             "TargetShaping",
             "UniformScaleContent"
@@ -929,7 +915,6 @@
             "LightInfluence",
             "Segments",
             "Texture",
-            "TextureContent",
             "TextureLength",
             "TextureMode",
             "TextureSpeed",
@@ -945,6 +930,38 @@
     },
     "BindableFunction": {
         "Superclass": "Instance",
+        "Members": []
+    },
+    "BodyMover": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "BodyAngularVelocity": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "BodyForce": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "BodyGyro": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "BodyPosition": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "BodyThrust": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "BodyVelocity": {
+        "Superclass": "BodyMover",
+        "Members": []
+    },
+    "RocketPropulsion": {
+        "Superclass": "BodyMover",
         "Members": []
     },
     "BodyPartDescription": {
@@ -1041,12 +1058,9 @@
     "CharacterMesh": {
         "Superclass": "CharacterAppearance",
         "Members": [
-            "BaseTextureContent",
             "BaseTextureId",
             "BodyPart",
-            "MeshContent",
             "MeshId",
-            "OverlayTextureContent",
             "OverlayTextureId"
         ]
     },
@@ -1059,15 +1073,13 @@
     "Pants": {
         "Superclass": "Clothing",
         "Members": [
-            "PantsTemplate",
-            "PantsTemplateContent"
+            "PantsTemplate"
         ]
     },
     "Shirt": {
         "Superclass": "Clothing",
         "Members": [
-            "ShirtTemplate",
-            "ShirtTemplateContent"
+            "ShirtTemplate"
         ]
     },
     "ShirtGraphic": {
@@ -1078,11 +1090,14 @@
             "TextureContent"
         ]
     },
+    "Skin": {
+        "Superclass": "CharacterAppearance",
+        "Members": []
+    },
     "Chat": {
         "Superclass": "Instance",
         "Members": [
-            "BubbleChatEnabled",
-            "LoadDefaultChat"
+            "BubbleChatEnabled"
         ]
     },
     "ClickDetector": {
@@ -1317,6 +1332,10 @@
     },
     "PlaneConstraint": {
         "Superclass": "Constraint",
+        "Members": []
+    },
+    "Plane": {
+        "Superclass": "PlaneConstraint",
         "Members": []
     },
     "RigidConstraint": {
@@ -1577,6 +1596,14 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "CustomEvent": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "CustomEventReceiver": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "CustomLog": {
         "Superclass": "Instance",
         "Members": []
@@ -1589,16 +1616,22 @@
             "VertexColor"
         ]
     },
+    "BevelMesh": {
+        "Superclass": "DataModelMesh",
+        "Members": []
+    },
     "BlockMesh": {
+        "Superclass": "BevelMesh",
+        "Members": []
+    },
+    "CylinderMesh": {
         "Superclass": "BevelMesh",
         "Members": []
     },
     "FileMesh": {
         "Superclass": "DataModelMesh",
         "Members": [
-            "MeshContent",
             "MeshId",
-            "TextureContent",
             "TextureId"
         ]
     },
@@ -1980,17 +2013,11 @@
             "AutoLocalize",
             "Color3",
             "ColorMap",
-            "ColorMapContent",
-            "EmissiveMaskContent",
             "EmissiveStrength",
             "EmissiveTint",
-            "MetalnessMapContent",
-            "NormalMapContent",
             "ResampleMode",
             "Rotation",
-            "RoughnessMapContent",
             "Texture",
-            "TextureContent",
             "Transparency",
             "UVOffset",
             "UVScale",
@@ -2034,6 +2061,14 @@
             "LeftRight",
             "TopBottom"
         ]
+    },
+    "Hole": {
+        "Superclass": "Feature",
+        "Members": []
+    },
+    "MotorFeature": {
+        "Superclass": "Feature",
+        "Members": []
     },
     "FeatureMatchingService": {
         "Superclass": "Instance",
@@ -2107,23 +2142,11 @@
     },
     "FollowRotationBoneBehavior": {
         "Superclass": "Instance",
-        "Members": [
-            "CounterRotate",
-            "Driver",
-            "Weight"
-        ]
+        "Members": []
     },
     "FollowTwistBoneBehavior": {
         "Superclass": "Instance",
-        "Members": [
-            "Axis",
-            "AxisMode",
-            "CounterRotate",
-            "Driver",
-            "EndBone",
-            "StartBone",
-            "Weight"
-        ]
+        "Members": []
     },
     "ForceField": {
         "Superclass": "Instance",
@@ -2144,6 +2167,10 @@
         "Members": []
     },
     "FriendsCallingService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "FunctionalTest": {
         "Superclass": "Instance",
         "Members": []
     },
@@ -2476,7 +2503,6 @@
         "Superclass": "GuiBase2d",
         "Members": [
             "Enabled",
-            "InputSinkEnabled",
             "ResetOnSpawn",
             "ZIndexBehavior"
         ]
@@ -2525,6 +2551,10 @@
             "ScreenInsets"
         ]
     },
+    "GuiMain": {
+        "Superclass": "ScreenGui",
+        "Members": []
+    },
     "SurfaceGuiBase": {
         "Superclass": "LayerCollector",
         "Members": [
@@ -2563,6 +2593,10 @@
             "Transparency",
             "Visible"
         ]
+    },
+    "FloorWire": {
+        "Superclass": "GuiBase3d",
+        "Members": []
     },
     "InstanceAdornment": {
         "Superclass": "GuiBase3d",
@@ -2709,6 +2743,14 @@
             "Humanoid"
         ]
     },
+    "SelectionPartLasso": {
+        "Superclass": "SelectionLasso",
+        "Members": []
+    },
+    "SelectionPointLasso": {
+        "Superclass": "SelectionLasso",
+        "Members": []
+    },
     "Path2D": {
         "Superclass": "GuiBase",
         "Members": [
@@ -2784,6 +2826,10 @@
             "OutlineColor",
             "OutlineTransparency"
         ]
+    },
+    "Hopper": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "HttpRbxApiService": {
         "Superclass": "Instance",
@@ -2933,7 +2979,6 @@
             "NeckRangeMin",
             "NeckSize",
             "NeckTposeAdjustment",
-            "OriginOffset",
             "RightAnkle",
             "RightAnkleRangeMax",
             "RightAnkleRangeMin",
@@ -3148,6 +3193,30 @@
             "BaseAngle"
         ]
     },
+    "RotateP": {
+        "Superclass": "DynamicRotate",
+        "Members": []
+    },
+    "RotateV": {
+        "Superclass": "DynamicRotate",
+        "Members": []
+    },
+    "Glue": {
+        "Superclass": "JointInstance",
+        "Members": []
+    },
+    "ManualSurfaceJointInstance": {
+        "Superclass": "JointInstance",
+        "Members": []
+    },
+    "ManualGlue": {
+        "Superclass": "ManualSurfaceJointInstance",
+        "Members": []
+    },
+    "ManualWeld": {
+        "Superclass": "ManualSurfaceJointInstance",
+        "Members": []
+    },
     "Motor": {
         "Superclass": "JointInstance",
         "Members": [
@@ -3158,6 +3227,14 @@
     },
     "Motor6D": {
         "Superclass": "Motor",
+        "Members": []
+    },
+    "Rotate": {
+        "Superclass": "JointInstance",
+        "Members": []
+    },
+    "Snap": {
+        "Superclass": "JointInstance",
         "Members": []
     },
     "VelocityMotor": {
@@ -3171,6 +3248,10 @@
     },
     "Weld": {
         "Superclass": "JointInstance",
+        "Members": []
+    },
+    "JointsService": {
+        "Superclass": "Instance",
         "Members": []
     },
     "KeyboardService": {
@@ -3244,10 +3325,7 @@
             "FogStart",
             "GeographicLatitude",
             "GlobalShadows",
-            "LightAttenuationMode",
-            "LightingStyle",
             "OutdoorAmbient",
-            "PrioritizeLightingQuality",
             "ShadowSoftness",
             "TimeOfDay"
         ]
@@ -3322,8 +3400,7 @@
         "Superclass": "LuaSourceContainer",
         "Members": [
             "Disabled",
-            "Enabled",
-            "RunContext"
+            "Enabled"
         ]
     },
     "CoreScript": {
@@ -3332,9 +3409,7 @@
     },
     "Script": {
         "Superclass": "BaseScript",
-        "Members": [
-            "Source"
-        ]
+        "Members": []
     },
     "LocalScript": {
         "Superclass": "Script",
@@ -3342,9 +3417,7 @@
     },
     "ModuleScript": {
         "Superclass": "LuaSourceContainer",
-        "Members": [
-            "Source"
-        ]
+        "Members": []
     },
     "LuaWebService": {
         "Superclass": "Instance",
@@ -3434,6 +3507,14 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "Message": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "Hint": {
+        "Superclass": "Message",
+        "Members": []
+    },
     "MessageBusConnection": {
         "Superclass": "Instance",
         "Members": []
@@ -3478,7 +3559,6 @@
         "Superclass": "Instance",
         "Members": [
             "Icon",
-            "IconContent",
             "TargetFilter"
         ]
     },
@@ -3558,6 +3638,14 @@
         "Superclass": "Instance",
         "Members": []
     },
+    "OpenCloudApiV1": {
+        "Superclass": "Instance",
+        "Members": []
+    },
+    "OpenCloudService": {
+        "Superclass": "Instance",
+        "Members": []
+    },
     "OperationGraph": {
         "Superclass": "Instance",
         "Members": []
@@ -3615,6 +3703,10 @@
             "Shape"
         ]
     },
+    "FlagStand": {
+        "Superclass": "Part",
+        "Members": []
+    },
     "Platform": {
         "Superclass": "Part",
         "Members": []
@@ -3624,6 +3716,10 @@
         "Members": [
             "Disabled"
         ]
+    },
+    "SkateboardPlatform": {
+        "Superclass": "Part",
+        "Members": []
     },
     "SpawnLocation": {
         "Superclass": "Part",
@@ -3642,8 +3738,6 @@
     "Terrain": {
         "Superclass": "BasePart",
         "Members": [
-            "Decoration",
-            "GrassLength",
             "WaterColor",
             "WaterReflectance",
             "WaterTransparency",
@@ -3653,25 +3747,18 @@
     },
     "TriangleMeshPart": {
         "Superclass": "BasePart",
-        "Members": [
-            "CollisionFidelity",
-            "FluidFidelity"
-        ]
+        "Members": []
     },
     "MeshPart": {
         "Superclass": "TriangleMeshPart",
         "Members": [
             "DoubleSided",
-            "RenderFidelity",
-            "TextureContent",
             "TextureID"
         ]
     },
     "PartOperation": {
         "Superclass": "TriangleMeshPart",
         "Members": [
-            "RenderFidelity",
-            "SmoothingAngle",
             "UsePartColor"
         ]
     },
@@ -3735,7 +3822,6 @@
         "Superclass": "PVInstance",
         "Members": [
             "ExplorerIconContent",
-            "LevelOfDetail",
             "ModelStreamingMode",
             "PrimaryPart",
             "WorldPivot"
@@ -3748,9 +3834,12 @@
     "BackpackItem": {
         "Superclass": "Model",
         "Members": [
-            "TextureContent",
             "TextureId"
         ]
+    },
+    "HopperBin": {
+        "Superclass": "BackpackItem",
+        "Members": []
     },
     "Tool": {
         "Superclass": "BackpackItem",
@@ -3763,12 +3852,20 @@
             "ToolTip"
         ]
     },
+    "Flag": {
+        "Superclass": "Tool",
+        "Members": []
+    },
     "ProceduralModel": {
         "Superclass": "Model",
         "Members": [
             "Generator",
             "Size"
         ]
+    },
+    "Status": {
+        "Superclass": "Model",
+        "Members": []
     },
     "WorldRoot": {
         "Superclass": "Model",
@@ -3780,27 +3877,13 @@
             "AirDensity",
             "AirTurbulenceIntensity",
             "AllowThirdPartySales",
-            "AuthorityMode",
             "ClientAnimatorThrottling",
             "CurrentCamera",
             "DistributedGameTime",
-            "FallHeightEnabled",
-            "FallenPartsDestroyHeight",
             "GlobalWind",
             "Gravity",
             "InsertPoint",
-            "LuauTypeCheckMode",
-            "NextGenerationPhysicsSolver",
-            "PredictiveStreamingMode",
-            "ReplicationFrequency",
-            "ReplicationThroughput",
-            "Retargeting",
-            "StreamOutBehavior",
-            "StreamingAdaptiveRadius",
-            "StreamingEnabled",
-            "StreamingIntegrityMode",
-            "StreamingMinRadius",
-            "StreamingTargetRadius"
+            "Retargeting"
         ]
     },
     "WorldModel": {
@@ -3923,7 +4006,6 @@
             "SpreadAngle",
             "Squash",
             "Texture",
-            "TextureContent",
             "TimeScale",
             "Transparency",
             "VelocityInheritance",
@@ -4127,10 +4209,8 @@
     "Players": {
         "Superclass": "Instance",
         "Members": [
-            "BanningEnabled",
             "CharacterAutoLoads",
-            "RespawnTime",
-            "UseStrafingAnimations"
+            "RespawnTime"
         ]
     },
     "Plugin": {
@@ -4195,6 +4275,10 @@
             "Enabled",
             "Icon"
         ]
+    },
+    "PointsService": {
+        "Superclass": "Instance",
+        "Members": []
     },
     "PolicyService": {
         "Superclass": "Instance",
@@ -4541,7 +4625,6 @@
         "Superclass": "Instance",
         "Members": [
             "CameraButtonIcon",
-            "CameraButtonIconContent",
             "CameraButtonPosition",
             "CloseButtonPosition",
             "CloseWhenScreenshotTaken",
@@ -4729,7 +4812,6 @@
         "Members": [
             "CelestialBodiesShown",
             "MoonAngularSize",
-            "MoonTextureContent",
             "MoonTextureId",
             "SkyboxBackContent",
             "SkyboxBk",
@@ -4743,10 +4825,8 @@
             "SkyboxRightContent",
             "SkyboxRt",
             "SkyboxUp",
-            "SkyboxUpContent",
             "StarCount",
             "SunAngularSize",
-            "SunTextureContent",
             "SunTextureId"
         ]
     },
@@ -4793,7 +4873,6 @@
         "Superclass": "Instance",
         "Members": [
             "AcousticSimulationEnabled",
-            "AudioContent",
             "LoopRegion",
             "Looped",
             "PlayOnRemove",
@@ -4916,7 +4995,6 @@
         "Members": [
             "AcousticSimulationEnabled",
             "AmbientReverb",
-            "DefaultListenerLocation",
             "DiffractionEnabled",
             "DistanceFactor",
             "DopplerScale",
@@ -4983,7 +5061,6 @@
             "CharacterUseJumpPower",
             "CharacterWalkSpeed",
             "ClassicDeath",
-            "CreateDefaultPlayerModule",
             "DevCameraOcclusionMode",
             "DevComputerCameraMovementMode",
             "DevComputerMovementMode",
@@ -5365,7 +5442,6 @@
             "FontFace",
             "HeightScale",
             "HorizontalAlignment",
-            "TextChannelDisplayMode",
             "TextColor3",
             "TextSize",
             "TextStrokeColor3",
@@ -5422,17 +5498,11 @@
     },
     "TextChatService": {
         "Superclass": "Instance",
-        "Members": [
-            "ChatTranslationEnabled",
-            "CreateDefaultCommands",
-            "CreateDefaultTextChannels"
-        ]
+        "Members": []
     },
     "TextDocument": {
         "Superclass": "Instance",
-        "Members": [
-            "TextContent"
-        ]
+        "Members": []
     },
     "TextFilterResult": {
         "Superclass": "Instance",
@@ -5533,7 +5603,6 @@
             "MaxLength",
             "MinLength",
             "Texture",
-            "TextureContent",
             "TextureLength",
             "TextureMode",
             "Transparency",
@@ -5803,7 +5872,6 @@
             "MouseBehavior",
             "MouseDeltaSensitivity",
             "MouseIcon",
-            "MouseIconContent",
             "MouseIconEnabled"
         ]
     },
@@ -5857,6 +5925,14 @@
         "Members": [
             "Value"
         ]
+    },
+    "DoubleConstrainedValue": {
+        "Superclass": "ValueBase",
+        "Members": []
+    },
+    "IntConstrainedValue": {
+        "Superclass": "ValueBase",
+        "Members": []
     },
     "IntValue": {
         "Superclass": "ValueBase",
@@ -5924,6 +6000,7 @@
             "Looping",
             "PlaybackSpeed",
             "TimePosition",
+            "VideoContent",
             "Volume"
         ]
     },
@@ -5969,11 +6046,7 @@
     },
     "VoiceChatService": {
         "Superclass": "Instance",
-        "Members": [
-            "DefaultDistanceAttenuation",
-            "EnableDefaultVoice",
-            "UseAudioApi"
-        ]
+        "Members": []
     },
     "WebSocketClient": {
         "Superclass": "Instance",

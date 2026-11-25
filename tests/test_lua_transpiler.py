@@ -11,7 +11,7 @@ def prettify_number(n: float):
 
 def encapsulate_string(s: str) -> str:
     level = ""
-    while f"]{level}]" in s:
+    while f"]{level}]" in s + "]":
         level += "="
     return f"[{level}[{s}]{level}]"
 
@@ -25,6 +25,7 @@ class TestLuaTranspilerRules(unittest.TestCase):
     def test_encapsulate_string(self):
         self.assertEqual(encapsulate_string("hello"), "[[hello]]")
         self.assertEqual(encapsulate_string("a]b"), "[[a]b]]")
+        self.assertEqual(encapsulate_string("[X]"), "[=[[X]]=]")
         self.assertEqual(encapsulate_string("a]]b"), "[=[a]]b]=]")
         self.assertEqual(encapsulate_string("a]=]b]]c"), "[==[a]=]b]]c]==]")
 

@@ -6,6 +6,19 @@ local CollectionService = game:GetService("CollectionService");
 
 local F_NEWINST = [[
 %s["%s"] = Instance.new("%s", %s);
+]];
+
+local F_NEWMESH = [[
+do
+    local Success, Mesh = pcall(function()
+        return game:GetService("AssetService"):CreateMeshPartAsync(Content.fromUri(%s), {CollisionFidelity = %s});
+    end);
+    %s = Success and Mesh or Instance.new("MeshPart");
+    %s.Parent = %s;
+end;
+]];
+
+local F_INSTBODY = [[
 %s
 %s
 %s
@@ -29,18 +42,15 @@ end;
 local BLACKLIST = {
     Source = true,
     Parent = true,
-    ImageContent = true,
-    HoverImageContent = true,
-    PressedImageContent = true,
-    TopImageContent = true,
-    MidImageContent = true,
-    BottomImageContent = true,
-    VideoContent = true,
-    CursorIconContent = true,
-    ActivatedCursorIconContent = true,
-    FallbackImageContent = true,
-    AudioContent = true,
+    -- sandboxing is meaningless for instances created by the output script (and not transpilable)
+    Capabilities = true,
+    Sandboxed = true,
+    -- alias of BasePart.Color, writing it would snap Color to the nearest palette color
+    BrickColor = true,
 };
+
+-- UICorner.CornerRadius is an alias which overwrites all of these
+local CORNER_RADII = {'TopLeftRadius', 'TopRightRadius', 'BottomLeftRadius', 'BottomRightRadius'};
 
 local math_round = math.round;
 
@@ -58,6 +68,7 @@ export type ConvertionRes = {
     _INST: {[number]: RegInstance},
     _LUA: {[number]: RegInstance},
     _MOD: {[number]: RegInstance},
+    _REF: {[number]: {Reg: RegInstance, Member: string, Target: Instance}},
     HasTags: boolean,
     NumTags: number
 };
@@ -70,10 +81,20 @@ export type Settings = {
 
 local function EncapsulateString(Str: string): string
     local Level = '';
-    while Str:find(']' .. Level .. ']') do
+    -- the trailing bracket is needed for strings ending with ']', it would close the literal too early
+    while (Str .. ']'):find(']' .. Level .. ']', 1, true) do
         Level = Level .. '=';
-    end
+    end;
+    -- luau ignores the first newline of a long string
+    if Str:sub(1, 1) == '\n' then
+        Str = '\n' .. Str;
+    end;
     return '[' .. Level .. '[' .. Str .. ']' .. Level .. ']';
+end;
+
+-- names can contain newlines, which would escape the comment
+local function CommentName(Inst: Instance): string
+    return (Inst:GetFullName():gsub('[\r\n]', ' '));
 end;
 
 local function DefaultSettings(): Settings
@@ -177,12 +198,11 @@ local function TranspileValue(RawValue: any): string
             PrettifyNumber(RawValue.Min), PrettifyNumber(RawValue.Max)
         );
     elseif Type == 'CFrame' then
-        local Position = RawValue.Position;
-        local LookVector = RawValue.LookVector;
-        Value = ('CFrame.new(Vector3.new(%s, %s, %s), Vector3.new(%s, %s, %s))'):format(
-            PrettifyNumber(Position.X), PrettifyNumber(Position.Y), PrettifyNumber(Position.Z),
-            PrettifyNumber(LookVector.X), PrettifyNumber(LookVector.Y), PrettifyNumber(LookVector.Z)
-        );
+        local Components = {RawValue:GetComponents()};
+        for Idx, Component in ipairs(Components) do
+            Components[Idx] = tostring(PrettifyNumber(Component));
+        end;
+        Value = ('CFrame.new(%s)'):format(table.concat(Components, ', '));
     elseif Type == 'Content' then
         local Uri = RawValue.Uri;
         if RawValue == Content.none or Uri == nil or Uri == '' then
@@ -230,25 +250,85 @@ local function TranspileValue(RawValue: any): string
     return Value;
 end;
 
+-- Resolve which radius properties must be skipped, since CornerRadius and the single radii conflict
+local function GetCornerSkips(Corner: any): {[string]: boolean}
+    local Skips = {};
+    local Uniform = true;
+    pcall(function() -- single radii may be unavailable
+        for _, Radius in ipairs(CORNER_RADII) do
+            Uniform = Uniform and Corner[Radius] == Corner.CornerRadius;
+        end;
+    end);
+    if Uniform then
+        for _, Radius in ipairs(CORNER_RADII) do
+            Skips[Radius] = true;
+        end;
+    else
+        Skips.CornerRadius = true;
+    end;
+    return Skips;
+end;
+
+-- MeshId can't be written by scripts, the mesh has to be provided on creation
+local function TranspileMeshPart(Res: ConvertionRes, Inst: RegInstance, Parent: string): string?
+    local MeshId = (Inst.Instance :: any).MeshId;
+    if MeshId == '' then
+        return nil;
+    end;
+    local Reg = ('%s["%s"]'):format(Res.Settings.RegName, Inst.Id);
+    return F_NEWMESH:format(
+        EncapsulateString(MeshId), tostring((Inst.Instance :: any).CollisionFidelity),
+        Reg, Reg, Parent
+    );
+end;
+
 local function TranspileProperties(Res: ConvertionRes, Inst: RegInstance): string
     local Properties = '';
     local Members = RbxApi.GetProperties(Inst.Instance.ClassName);
 
-    for Member, Default: RbxApi.ValueObject in pairs(Members) do
-        if BLACKLIST[Member] then
+    -- sorted to keep the output deterministic
+    local Names = {};
+    for Member in pairs(Members) do
+        table.insert(Names, Member);
+    end;
+    table.sort(Names);
+
+    local Skips = {};
+    if Inst.Instance:IsA('UICorner') then
+        Skips = GetCornerSkips(Inst.Instance);
+    end;
+
+    for _, Member in ipairs(Names) do
+        if BLACKLIST[Member] or Skips[Member] then
             continue;
         end;
 
-        local CanSkip = false;
+        local Default: RbxApi.ValueObject = Members[Member];
+        local Value;
         local Integrity = pcall(function()
-            CanSkip = Inst.Instance[Member] == Default.Value;
+            Value = Inst.Instance[Member];
         end);
-
-        if CanSkip or not Integrity then
+        if not Integrity then
             continue;
         end;
 
-        local Transpiled = TranspileValue(Inst.Instance[Member]);
+        -- defaults can be skipped, except for:
+        --  * single corner radii, once they differ from each other
+        --  * mesh size, since the mesh is created with its native size
+        if Value == Default.Value
+            and not (Skips.CornerRadius and table.find(CORNER_RADII, Member))
+            and not (Member == 'Size' and Inst.Instance:IsA('MeshPart'))
+        then
+            continue;
+        end;
+
+        -- references are written after all instances, the target might not exist yet
+        if typeof(Value) == 'Instance' then
+            table.insert(Res._REF, {Reg = Inst, Member = Member, Target = Value});
+            continue;
+        end;
+
+        local Transpiled = TranspileValue(Value);
         if Transpiled == '' then
             if Utils.IsLocal() then
                 Properties = Properties .. '-- ';
@@ -320,21 +400,24 @@ local function WriteInstances(Res: ConvertionRes)
     for _, Inst in ipairs(Res._INST) do
         local Comment = '';
         if Res.Settings.Comments then
-            Comment = '-- ' .. Inst.Instance:GetFullName() .. '\n';
+            Comment = '-- ' .. CommentName(Inst.Instance) .. '\n';
         end;
 
         local Parent = '';
         if Inst.Parent == nil then
             Parent = 'game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")';
+            -- a GuiObject doesn't render without a ScreenGui
+            if not Inst.Instance:IsA('LayerCollector') then
+                Parent = ('Instance.new("ScreenGui", %s)'):format(Parent);
+            end;
         else
             Parent = ('%s["%s"]'):format(Res.Settings.RegName, Inst.Parent.Id);
         end;
 
-        Res.Source = Res.Source .. Comment .. F_NEWINST:format(
-            Res.Settings.RegName,
-            Inst.Id,
-            Inst.Instance.ClassName,
-            Parent,
+        local Creation = Inst.Instance:IsA('MeshPart') and TranspileMeshPart(Res, Inst, Parent)
+            or F_NEWINST:format(Res.Settings.RegName, Inst.Id, Inst.Instance.ClassName, Parent);
+
+        Res.Source = Res.Source .. Comment .. Creation .. F_INSTBODY:format(
             TranspileProperties(Res, Inst),
             TranspileAttributes(Res, Inst),
             TranspileTags(Res, Inst)
@@ -354,6 +437,31 @@ local function WriteInstances(Res: ConvertionRes)
                 );
             end;
         end;
+    end;
+end;
+
+-- Write properties holding an instance, ex: ViewportFrame.CurrentCamera
+local function WriteReferences(Res: ConvertionRes)
+    local Ids = {};
+    for _, Inst in ipairs(Res._INST) do
+        Ids[Inst.Instance] = Inst.Id;
+    end;
+
+    for _, Ref in ipairs(Res._REF) do
+        local TargetId = Ids[Ref.Target];
+        if TargetId then
+            Res.Source = Res.Source .. ('%s["%s"]["%s"] = %s["%s"];\n'):format(
+                Res.Settings.RegName, Ref.Reg.Id, Ref.Member, Res.Settings.RegName, TargetId
+            );
+        else
+            Res.Source = Res.Source .. ('-- [WARN] %s["%s"].%s references an instance outside of the converted gui: %s\n'):format(
+                Res.Settings.RegName, Ref.Reg.Id, Ref.Member, CommentName(Ref.Target)
+            );
+        end;
+    end;
+
+    if #Res._REF > 0 then
+        Res.Source = Res.Source .. '\n';
     end;
 end;
 
@@ -380,7 +488,7 @@ local function WriteScripts(Res: ConvertionRes)
         local ClosureName = 'C_' .. Script.Id;
         local Comment = '';
         if Res.Settings.Comments then
-            Comment = '-- ' .. Script.Instance:GetFullName() .. '\n';
+            Comment = '-- ' .. CommentName(Script.Instance) .. '\n';
         end;
         local Source = ('local script = %s["%s"];\n\t'):format(
             Res.Settings.RegName, Script.Id
@@ -401,6 +509,7 @@ local function Convert(Gui: Instance, Settings: Settings?): ConvertionRes
         _INST = {},
         _LUA = {},
         _MOD = {},
+        _REF = {},
         HasTags = false,
         NumTags = 0
     };
@@ -408,6 +517,7 @@ local function Convert(Gui: Instance, Settings: Settings?): ConvertionRes
     Res.Source = ('local %s = {};\n\n'):format(Settings.RegName);
     LoadDescendants(Res, Gui, nil);
     WriteInstances(Res);
+    WriteReferences(Res);
     WriteScripts(Res);
     Res.Source = Res.Source .. ('\nreturn %s["%s"], require;'):format(Settings.RegName, Res._INST[1].Id);
 

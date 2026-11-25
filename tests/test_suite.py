@@ -1,7 +1,7 @@
 import json
 import unittest
 from pathlib import Path
-from ApiDumper.dump import SanitizeDump, CONTENT_MIRROR_PROPERTIES, BLOCKED_TAGS
+from ApiDumper.dump import SanitizeDump, is_content_mirror
 from ApiDumper.api_v2 import RobloxStudioApi
 
 ROOT_DIR = Path(__file__).parent.parent
@@ -91,9 +91,22 @@ class TestGuiToLuaModernApi(unittest.TestCase):
 
     def test_no_content_mirror_properties(self):
         for cls_name, cls_data in self.dump.items():
-            members = set(cls_data.get("Members", []))
-            overlap = members & CONTENT_MIRROR_PROPERTIES
-            self.assertEqual(overlap, set(), f"Class {cls_name} contains unneeded content mirrors: {overlap}")
+            members = cls_data["Members"]
+            mirrors = [name for name in members if is_content_mirror(name, members)]
+            self.assertEqual(mirrors, [], f"Class {cls_name} contains unneeded content mirrors: {mirrors}")
+
+    def test_content_without_counterpart_is_kept(self):
+        self.assertIn("VideoContent", self.dump["VideoPlayer"]["Members"])
+
+    def test_plugin_only_properties_are_filtered(self):
+        self.assertNotIn("InputSinkEnabled", self.dump["LayerCollector"]["Members"])
+        self.assertNotIn("RunContext", self.dump["BaseScript"]["Members"])
+
+    def test_superclass_chain_is_complete(self):
+        for cls_name, cls_data in self.dump.items():
+            superclass = cls_data["Superclass"]
+            if superclass != "<<<ROOT>>>":
+                self.assertIn(superclass, self.dump, f"{cls_name} has an unknown superclass")
 
     def test_api_v2_fetch(self):
         api = RobloxStudioApi()
