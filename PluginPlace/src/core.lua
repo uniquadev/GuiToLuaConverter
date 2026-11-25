@@ -39,6 +39,7 @@ local BLACKLIST = {
     CursorIconContent = true,
     ActivatedCursorIconContent = true,
     FallbackImageContent = true,
+    AudioContent = true,
 };
 
 local math_round = math.round;

@@ -9,6 +9,7 @@ CONTENT_MIRROR_PROPERTIES = {
     "CursorIconContent",
     "ActivatedCursorIconContent",
     "FallbackImageContent",
+    "AudioContent",
 }
 
 BLOCKED_TAGS = {"Deprecated", "ReadOnly", "Hidden", "NotScriptable"}
